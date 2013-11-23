@@ -13,6 +13,8 @@ SnakeNode::SnakeNode(sf::Vector2f position)
 	shape_.setPosition(position_);
 	shape_.setFillColor(sf::Color::Green);
 	shape_.setSize(sf::Vector2f(SnakeNode::Width, SnakeNode::Height));
+	shape_.setOutlineColor(sf::Color::White);
+	shape_.setOutlineThickness(-1.f);
 }
 
 void SnakeNode::setPosition(sf::Vector2f position)

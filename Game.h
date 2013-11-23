@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Snake.h"
+
 namespace sfSnake
 {
 class Game
@@ -21,6 +23,8 @@ public:
 
 private:
 	sf::RenderWindow window_;
+
+	Snake snake_;
 
 	static const sf::Time TimePerFrame;
 };

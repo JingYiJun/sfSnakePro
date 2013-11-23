@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <list>
+#include <vector>
 
 #include "SnakeNode.h"
 
@@ -24,15 +24,16 @@ public:
 	void render(sf::RenderWindow& window);
 
 private:
-	void moveUp();
-	void moveDown();
-	void moveLeft();
-	void moveRight();
+	void move();
+
+	void initNodes();
 
 	sf::Vector2f position_;
 	Direction direction_;
 
-	std::list<SnakeNode> nodes_;
+	std::vector<SnakeNode> nodes_;
+
+	static const int InitialSize = 3;
 };
 }
 

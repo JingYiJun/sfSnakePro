@@ -4,11 +4,12 @@
 
 using namespace sfSnake;
 
-// 60 frames per second.
-const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
+// 10 frames per second.
+const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 
 Game::Game()
-: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
+: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake"),
+snake_()
 {
 
 }
@@ -22,17 +23,19 @@ void Game::handleInput()
 		if (event.type == sf::Event::Closed)
 			window_.close();
 	}
+
+	snake_.handleInput();
 }
 
 void Game::update(sf::Time delta)
 {
-
+	snake_.update(delta);
 }
 
 void Game::render()
 {
 	window_.clear();
-
+	snake_.render(window_);
 	window_.display();
 }
 
