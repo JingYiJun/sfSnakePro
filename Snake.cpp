@@ -37,6 +37,21 @@ void Snake::handleInput()
 void Snake::update(sf::Time delta)
 {
 	move();
+	checkEdgeCollisions();
+}
+
+void Snake::checkEdgeCollisions()
+{
+	SnakeNode& headNode = nodes_[0];
+
+	if (headNode.getPosition().x <= 0)
+		headNode.setPosition(Game::Width, headNode.getPosition().y);
+	else if (headNode.getPosition().x >= Game::Width)
+		headNode.setPosition(0, headNode.getPosition().y);
+	else if (headNode.getPosition().y <= 0)
+		headNode.setPosition(headNode.getPosition().x, Game::Height);
+	else if (headNode.getPosition().y >= Game::Height)
+		headNode.setPosition(headNode.getPosition().x, 0);
 }
 
 void Snake::move()

@@ -25,7 +25,7 @@ public:
 
 private:
 	void move();
-
+	void checkEdgeCollisions();
 	void initNodes();
 
 	sf::Vector2f position_;
