@@ -19,12 +19,12 @@ public:
 
 	sf::Vector2f getPosition() const;
 
+	static const float Width;
+	static const float Height;
+
 private:
 	sf::RectangleShape shape_;
 	sf::Vector2f position_;
-
-	static const float Width;
-	static const float Height;
 };
 }
 
