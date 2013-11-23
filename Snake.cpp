@@ -4,6 +4,8 @@
 
 #include "Snake.h"
 #include "Game.h"
+#include "Fruit.h"
+#include "SnakeNode.h"
 
 using namespace sfSnake;
 
@@ -39,6 +41,46 @@ void Snake::update(sf::Time delta)
 	move();
 	checkEdgeCollisions();
 	checkSelfCollisions();
+}
+
+void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
+{
+	decltype(fruits.begin()) toRemove = fruits.end();
+
+	for (auto& it = fruits.begin(); it != fruits.end(); ++it)
+	{
+		if (it->getBounds().intersects(nodes_[0].getBounds()))
+			toRemove = it;
+	}
+
+	if (toRemove != fruits.end())
+	{
+		grow();
+		fruits.erase(toRemove);
+	}
+}
+
+void Snake::grow()
+{
+	switch (direction_)
+	{
+	case Direction::Up:
+		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
+			nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::Height)));
+		break;
+	case Direction::Down:
+		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
+			nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::Height)));
+		break;
+	case Direction::Left:
+		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
+			nodes_[nodes_.size() - 1].getPosition().y)));
+		break;
+	case Direction::Right:
+		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x - SnakeNode::Width,
+			nodes_[nodes_.size() - 1].getPosition().y)));
+		break;
+	}
 }
 
 void Snake::checkSelfCollisions()
@@ -92,6 +134,7 @@ void Snake::move()
 
 void Snake::render(sf::RenderWindow& window)
 {
+	std::cout << nodes_.size() << std::endl;
 	for (auto node : nodes_)
 		node.render(window);
 }

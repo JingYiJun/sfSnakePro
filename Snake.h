@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "SnakeNode.h"
+#include "Fruit.h"
 
 namespace sfSnake
 {
@@ -23,8 +24,11 @@ public:
 	void update(sf::Time delta);
 	void render(sf::RenderWindow& window);
 
+	void checkFruitCollisions(std::vector<Fruit>& fruits);
+
 private:
 	void move();
+	void grow();
 	void checkEdgeCollisions();
 	void checkSelfCollisions();
 	void initNodes();
