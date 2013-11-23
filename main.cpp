@@ -1,6 +1,6 @@
 #include "Game.h"
 
-using namespace Snake;
+using namespace sfSnake;
 
 int main()
 {

@@ -2,7 +2,7 @@
 
 #include "Game.h"
 
-using namespace Snake;
+using namespace sfSnake;
 
 // 60 frames per second.
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);

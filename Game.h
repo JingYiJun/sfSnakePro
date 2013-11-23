@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace Snake
+namespace sfSnake
 {
 class Game
 {
