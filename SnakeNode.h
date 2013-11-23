@@ -18,6 +18,7 @@ public:
 	void render(sf::RenderWindow& window);
 
 	sf::Vector2f getPosition() const;
+	sf::FloatRect getBounds() const;
 
 	static const float Width;
 	static const float Height;

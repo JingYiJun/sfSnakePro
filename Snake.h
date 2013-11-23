@@ -26,6 +26,7 @@ public:
 private:
 	void move();
 	void checkEdgeCollisions();
+	void checkSelfCollisions();
 	void initNodes();
 
 	sf::Vector2f position_;
@@ -33,7 +34,7 @@ private:
 
 	std::vector<SnakeNode> nodes_;
 
-	static const int InitialSize = 3;
+	static const int InitialSize = 15;
 };
 }
 

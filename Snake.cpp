@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 
-#include "Snake.h"
 #include <iostream>
 
+#include "Snake.h"
 #include "Game.h"
 
 using namespace sfSnake;
@@ -38,6 +38,18 @@ void Snake::update(sf::Time delta)
 {
 	move();
 	checkEdgeCollisions();
+	checkSelfCollisions();
+}
+
+void Snake::checkSelfCollisions()
+{
+	SnakeNode& headNode = nodes_[0];
+
+	for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
+	{
+		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
+			std::cout << "Collision with self!" << std::endl;
+	}
 }
 
 void Snake::checkEdgeCollisions()
