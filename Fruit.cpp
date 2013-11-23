@@ -17,3 +17,8 @@ void Fruit::render(sf::RenderWindow& window)
 {
 	window.draw(shape_);
 }
+
+sf::FloatRect Fruit::getBounds() const
+{
+	return shape_.getGlobalBounds();
+}

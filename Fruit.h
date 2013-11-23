@@ -12,6 +12,8 @@ public:
 
 	void render(sf::RenderWindow& window);
 
+	sf::FloatRect getBounds() const;
+
 private:
 	sf::CircleShape shape_;
 
