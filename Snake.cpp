@@ -20,6 +20,10 @@ Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
 	pickupBuffer_.loadFromFile("Sounds/pickup.aiff");
 	pickupSound_.setBuffer(pickupBuffer_);
 	pickupSound_.setVolume(30);
+
+	dieBuffer_.loadFromFile("Sounds/die.wav");
+	dieSound_.setBuffer(dieBuffer_);
+	dieSound_.setVolume(50);
 }
 
 void Snake::initNodes()
@@ -110,6 +114,8 @@ void Snake::checkSelfCollisions()
 	{
 		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
 		{
+			dieSound_.play();
+			sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
 			hitSelf_ = true;
 		}
 	}

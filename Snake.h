@@ -46,6 +46,9 @@ private:
 	sf::SoundBuffer pickupBuffer_;
 	sf::Sound pickupSound_;
 
+	sf::SoundBuffer dieBuffer_;
+	sf::Sound dieSound_;
+
 	std::vector<SnakeNode> nodes_;
 
 	static const int InitialSize;
