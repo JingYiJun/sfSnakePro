@@ -16,6 +16,7 @@ GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
 	text_.setString("Your score: " + std::to_string(score) + "!"
 		"\n\nPress [SPACE] to retry"
 		"\n\nPress [ESC] to quit");
+	text_.setColor(sf::Color::Red);
 
 	sf::FloatRect textBounds = text_.getLocalBounds();
 	text_.setOrigin(textBounds.left + textBounds.width / 2,
