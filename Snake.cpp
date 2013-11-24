@@ -134,7 +134,6 @@ void Snake::move()
 
 void Snake::render(sf::RenderWindow& window)
 {
-	std::cout << nodes_.size() << std::endl;
 	for (auto node : nodes_)
 		node.render(window);
 }
