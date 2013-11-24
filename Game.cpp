@@ -1,19 +1,18 @@
 #include <SFML/Graphics.hpp>
 
-#include <random>
-#include <ctime>
+#include <memory>
 
+#include "GameScreen.h"
 #include "Game.h"
-#include "Fruit.h"
 
 using namespace sfSnake;
 
-
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 
+std::shared_ptr<Screen> Game::Screen = std::make_shared<GameScreen>();
+
 Game::Game()
-: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake"),
-snake_()
+: window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
 {
 	
 }
@@ -28,36 +27,18 @@ void Game::handleInput()
 			window_.close();
 	}
 
-	snake_.handleInput();
+	Game::Screen->handleInput();
 }
 
 void Game::update(sf::Time delta)
 {
-	if (fruit_.size() == 0)
-		generateFruit();
-
-	snake_.update(delta);
-	snake_.checkFruitCollisions(fruit_);
-}
-
-void Game::generateFruit()
-{
-	static std::default_random_engine engine;
-	engine.seed(time(NULL));
-	static std::uniform_int_distribution<int> xDistribution(0, Game::Width - SnakeNode::Width);
-	static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeNode::Height);
-
-	fruit_.push_back(Fruit(sf::Vector2f(xDistribution(engine), yDistribution(engine))));
+	Game::Screen->update(delta);
 }
 
 void Game::render()
 {
 	window_.clear();
-	snake_.render(window_);
-
-	for (auto fruit : fruit_)
-		fruit.render(window_);
-
+	Game::Screen->render(window_);
 	window_.display();
 }
 

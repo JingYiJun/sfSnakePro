@@ -4,9 +4,9 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <memory>
 
-#include "Snake.h"
-#include "Fruit.h"
+#include "Screen.h"
 
 namespace sfSnake
 {
@@ -21,18 +21,14 @@ public:
 	void update(sf::Time delta);
 	void render();
 
-	void generateFruit();
-
 	static const int Width = 640;
 	static const int Height = 480;
 
+	static std::shared_ptr<Screen> Screen;
+
 private:
 	sf::RenderWindow window_;
-
-	Snake snake_;
-
-	std::vector<Fruit> fruit_;
-
+	
 	static const sf::Time TimePerFrame;
 };
 }
