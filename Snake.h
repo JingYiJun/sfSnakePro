@@ -44,7 +44,7 @@ private:
 
 	std::vector<SnakeNode> nodes_;
 
-	static const int InitialSize = 15;
+	static const int InitialSize;
 };
 }
 

@@ -11,6 +11,8 @@
 
 using namespace sfSnake;
 
+const int Snake::InitialSize = 5;
+
 Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
 {
 	initNodes();
