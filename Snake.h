@@ -26,12 +26,18 @@ public:
 
 	void checkFruitCollisions(std::vector<Fruit>& fruits);
 
+	bool hitSelf() const;
+
+	unsigned getSize() const;
+
 private:
 	void move();
 	void grow();
 	void checkEdgeCollisions();
 	void checkSelfCollisions();
 	void initNodes();
+
+	bool hitSelf_;
 
 	sf::Vector2f position_;
 	Direction direction_;

@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 
 #include <random>
+#include <memory>
 
 #include "GameScreen.h"
+#include "GameOverScreen.h"
 #include "Game.h"
 
 using namespace sfSnake;
@@ -24,6 +26,9 @@ void GameScreen::update(sf::Time delta)
 
 	snake_.update(delta);
 	snake_.checkFruitCollisions(fruit_);
+
+	if (snake_.hitSelf())
+		Game::Screen = std::make_shared<GameOverScreen>(snake_.getSize());
 }
 
 void GameScreen::render(sf::RenderWindow& window)

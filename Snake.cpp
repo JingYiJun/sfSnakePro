@@ -1,15 +1,17 @@
 #include <SFML/Graphics.hpp>
 
+#include <memory>
 #include <iostream>
 
 #include "Snake.h"
 #include "Game.h"
 #include "Fruit.h"
 #include "SnakeNode.h"
+#include "GameOverScreen.h"
 
 using namespace sfSnake;
 
-Snake::Snake() : direction_(Direction::Up)
+Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
 {
 	initNodes();
 }
@@ -83,6 +85,16 @@ void Snake::grow()
 	}
 }
 
+unsigned Snake::getSize() const
+{
+	return nodes_.size();
+}
+
+bool Snake::hitSelf() const
+{
+	return hitSelf_;
+}
+
 void Snake::checkSelfCollisions()
 {
 	SnakeNode& headNode = nodes_[0];
@@ -90,7 +102,9 @@ void Snake::checkSelfCollisions()
 	for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
 	{
 		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
-			std::cout << "Collision with self!" << std::endl;
+		{
+			hitSelf_ = true;
+		}
 	}
 }
 

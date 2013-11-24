@@ -27,7 +27,7 @@ void Game::handleInput()
 			window_.close();
 	}
 
-	Game::Screen->handleInput();
+	Game::Screen->handleInput(window_);
 }
 
 void Game::update(sf::Time delta)
