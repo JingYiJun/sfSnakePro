@@ -14,7 +14,9 @@ std::shared_ptr<Screen> Game::Screen = std::make_shared<GameScreen>();
 Game::Game()
 : window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
 {
-	
+	bgMusic_.openFromFile("Music/bg_music.wav");
+	bgMusic_.setLoop(true);
+	bgMusic_.play();
 }
 
 void Game::handleInput()

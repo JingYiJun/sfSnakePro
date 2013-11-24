@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include <vector>
 #include <memory>
@@ -28,6 +29,7 @@ public:
 
 private:
 	sf::RenderWindow window_;
+	sf::Music bgMusic_;
 	
 	static const sf::Time TimePerFrame;
 };
