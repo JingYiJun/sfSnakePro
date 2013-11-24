@@ -12,7 +12,7 @@ GameScreen::GameScreen() : snake_()
 
 }
 
-void GameScreen::handleInput()
+void GameScreen::handleInput(sf::RenderWindow& window)
 {
 	snake_.handleInput();
 }

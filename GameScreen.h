@@ -14,7 +14,7 @@ class GameScreen : public Screen
 public:
 	GameScreen();
 
-	void handleInput() override;
+	void handleInput(sf::RenderWindow& window) override;
 	void update(sf::Time delta) override;
 	void render(sf::RenderWindow& window) override;
 
