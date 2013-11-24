@@ -16,6 +16,10 @@ const int Snake::InitialSize = 5;
 Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
 {
 	initNodes();
+
+	pickupBuffer_.loadFromFile("Sounds/pickup.aiff");
+	pickupSound_.setBuffer(pickupBuffer_);
+	pickupSound_.setVolume(30);
 }
 
 void Snake::initNodes()
@@ -59,6 +63,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
 
 	if (toRemove != fruits.end())
 	{
+		pickupSound_.play();
 		grow();
 		fruits.erase(toRemove);
 	}

@@ -2,6 +2,7 @@
 #define SNAKE_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include <vector>
 
@@ -41,6 +42,9 @@ private:
 
 	sf::Vector2f position_;
 	Direction direction_;
+
+	sf::SoundBuffer pickupBuffer_;
+	sf::Sound pickupSound_;
 
 	std::vector<SnakeNode> nodes_;
 
