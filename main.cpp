@@ -4,8 +4,8 @@ using namespace sfSnake;
 
 int main()
 {
-	Game game;
-	game.run();
+    Game game;
+    game.run();
 
-	return 0;
+    return 0;
 }

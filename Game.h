@@ -11,29 +11,28 @@
 
 namespace sfSnake
 {
-class Game
-{
-public:
-	Game();
+    class Game
+    {
+    public:
+        Game();
 
-	void run();
+        void run();
 
-	void handleInput();
-	void update(sf::Time delta);
-	void render();
+        void handleInput();
+        void update(sf::Time delta);
+        void render();
 
-	static const int Width = 640;
-	static const int Height = 480;
+        static const int Width = 640;
+        static const int Height = 480;
 
-	static std::shared_ptr<Screen> Screen;
+        static std::shared_ptr<Screen> Screen;
 
-private:
-	sf::RenderWindow window_;
-	sf::Music bgMusic_;
-	
-	static const sf::Time TimePerFrame;
-};
+    private:
+        sf::RenderWindow window_;
+        sf::Music bgMusic_;
+
+        static const sf::Time TimePerFrame;
+    };
 }
-
 
 #endif

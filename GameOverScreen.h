@@ -7,21 +7,21 @@
 
 namespace sfSnake
 {
-class GameOverScreen : public Screen
-{
-public:
-	GameOverScreen(std::size_t score);
+    class GameOverScreen : public Screen
+    {
+    public:
+        GameOverScreen(std::size_t score);
 
-	void handleInput(sf::RenderWindow& window) override;
-	void update(sf::Time delta) override;
-	void render(sf::RenderWindow& window) override;
+        void handleInput(sf::RenderWindow &window) override;
+        void update(sf::Time delta) override;
+        void render(sf::RenderWindow &window) override;
 
-private:
-	sf::Font font_;
-	sf::Text text_;
+    private:
+        sf::Font font_;
+        sf::Text text_;
 
-	unsigned score_;
-};
+        unsigned score_;
+    };
 }
 
 #endif

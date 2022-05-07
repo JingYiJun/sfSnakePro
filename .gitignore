@@ -2,3 +2,6 @@ sfSnake.vcxproj
 sfSnake.vcxproj.filters
 Debug/
 Release/
+Build/
+main.exe
+sfSnake.exe
