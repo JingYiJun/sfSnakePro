@@ -40,8 +40,8 @@ void GameScreen::render(sf::RenderWindow &window)
 
 void GameScreen::generateFruit()
 {
-    static std::default_random_engine engine;
-    engine.seed(time(NULL));
+    static std::default_random_engine engine(time(NULL));
+
     static std::uniform_int_distribution<int> xDistribution(0, Game::Width - SnakeNode::Width);
     static std::uniform_int_distribution<int> yDistribution(0, Game::Height - SnakeNode::Height);
 

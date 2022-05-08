@@ -13,11 +13,11 @@ using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
+Snake::Snake() : hitSelf_(false), direction_(Direction::Up)
 {
     initNodes();
 
-    pickupBuffer_.loadFromFile("Sounds/pickup.aiff");
+    pickupBuffer_.loadFromFile("Sounds/pickup.wav");
     pickupSound_.setBuffer(pickupBuffer_);
     pickupSound_.setVolume(30);
 

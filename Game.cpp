@@ -7,7 +7,7 @@
 
 using namespace sfSnake;
 
-const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
+const sf::Time Game::TimePerFrame = sf::seconds(1.f / 20.f);
 
 std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
 
