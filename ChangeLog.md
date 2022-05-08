@@ -51,5 +51,3 @@ this change log is to log the difference from origin sfSnake on https://github.c
 + snakeText_.setFillColor(sf::Color::Green);
 ```
 将已弃用(deprecated)的`setColor`方法更改为建议使用的`setFillColor`方法
-
-**自此源代码中的所有bug被修复，所有编译错误和建议被修复**

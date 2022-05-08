@@ -3,5 +3,6 @@ sfSnake.vcxproj.filters
 Debug/
 Release/
 Build/
-main.exe
-sfSnake.exe
+*.exe
+.vscode
+*.log

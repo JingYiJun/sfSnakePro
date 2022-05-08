@@ -1,14 +1,14 @@
 CC=gcc
 CXX=g++
 CC_FLAGS=-g -Wall 
-CXX_FLAGS= -g -std=c++17 -Wall -O2
+CXX_FLAGS=-g -std=c++17 -Wall -O2
 
 rm=rm -fr
 mkdir=mkdir2 -p
 
-SRC_DIR= .
 TARGET=main
-BUILD_DIR=Build
+BUILD_DIR=build
+SRC_DIR= .
 SRCS = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.cpp))
 # $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.c*)) 
 # $(wildcard $(SRC_DIR)/*.c*) 
@@ -17,8 +17,8 @@ SRCS = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.cpp))
 OBJS = $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
 DEPS = $(OBJS:.o=.d)
 
-INC_DIR = . c:/SFML-2.5.1/include
-LIB_DIR = c:/SFML-2.5.1/lib
+INC_DIR = c:/sfml/include
+LIB_DIR = c:/sfml/lib
 LIBS    = sfml-audio sfml-graphics sfml-main sfml-network sfml-system sfml-window
 
 INC_FLAGS = $(addprefix -I,$(INC_DIR))
