@@ -1,14 +1,14 @@
 CC=gcc
 CXX=g++
-CC_FLAGS=-g -Wall 
-CXX_FLAGS=-g -std=c++17 -Wall -O2
+CC_FLAGS=-g -static -Wall -DSFML_STATIC #-Wl,--stack=268435456
+CXX_FLAGS=-g -static -std=c++17 -Wall -O2 -DSFML_STATIC #-Wl,--stack=268435456
 
 rm=rm -fr
 mkdir=mkdir2 -p
 
 TARGET=main
 BUILD_DIR=build
-SRC_DIR= .
+SRC_DIR= src src/screen src/element
 SRCS = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.cpp))
 # $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.c*)) 
 # $(wildcard $(SRC_DIR)/*.c*) 
@@ -17,9 +17,9 @@ SRCS = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.cpp))
 OBJS = $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
 DEPS = $(OBJS:.o=.d)
 
-INC_DIR = c:/sfml/include
-LIB_DIR = c:/sfml/lib
-LIBS    = sfml-audio sfml-graphics sfml-main sfml-network sfml-system sfml-window
+INC_DIR = ./src c:/sfml-static/include
+LIB_DIR = c:/sfml-static/lib
+LIBS    = sfml-main sfml-audio-s sfml-graphics-s sfml-network-s sfml-window-s sfml-system-s freetype openal32 flac vorbisenc vorbisfile vorbis ogg winmm gdi32 opengl32 ws2_32
 
 INC_FLAGS = $(addprefix -I,$(INC_DIR))
 LIB_FLAGS = $(addprefix -L,$(LIB_DIR)) $(addprefix -l,$(LIBS))
