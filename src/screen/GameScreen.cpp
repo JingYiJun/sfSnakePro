@@ -2,9 +2,10 @@
 
 #include <random>
 #include <memory>
+#include <iostream>
 
-#include "GameScreen.h"
-#include "GameOverScreen.h"
+#include "screen/GameScreen.h"
+#include "screen/GameOverScreen.h"
 #include "Game.h"
 
 using namespace sfSnake;
@@ -27,13 +28,15 @@ void GameScreen::update(sf::Time delta)
     snake_.checkFruitCollisions(fruit_);
 
     if (snake_.hitSelf())
-        Game::Screen_ = std::make_shared<GameOverScreen>(snake_.getSize());
+    {
+        Game::Screen_ = std::make_shared<GameOverScreen>(snake_.getScore());
+    }
 }
 
 void GameScreen::render(sf::RenderWindow &window)
 {
+    grid_.render(window);
     snake_.render(window);
-
     for (auto fruit : fruit_)
         fruit.render(window);
 }
@@ -42,8 +45,8 @@ void GameScreen::generateFruit()
 {
     static std::default_random_engine engine(time(NULL));
 
-    static std::uniform_int_distribution<int> xDistribution(SnakeNode::Width, Game::VideoMode_.width - SnakeNode::Width);
-    static std::uniform_int_distribution<int> yDistribution(SnakeNode::Height, Game::VideoMode_.height - SnakeNode::Height);
+    static std::uniform_int_distribution<int> xDistribution(10, Game::VideoMode_.width - 10);
+    static std::uniform_int_distribution<int> yDistribution(10, Game::VideoMode_.height - 10);
 
     fruit_.push_back(Fruit(sf::Vector2f(xDistribution(engine), yDistribution(engine))));
 }

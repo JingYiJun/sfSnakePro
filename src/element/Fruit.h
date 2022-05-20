@@ -14,9 +14,9 @@ namespace sfSnake
 
         sf::FloatRect getBounds() const;
 
-    private:
         sf::CircleShape shape_;
 
+    private:
         static const float Radius;
     };
 }

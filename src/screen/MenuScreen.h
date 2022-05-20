@@ -18,8 +18,8 @@ namespace sfSnake
 
     private:
         sf::Font font_;
-        sf::Text snakeText_;
-        sf::Text text_;
+        sf::Text titleText_;
+        sf::Text optionText_;
     };
 }
 

@@ -4,8 +4,8 @@
 #include <memory>
 
 #include "Game.h"
-#include "GameScreen.h"
-#include "GameOverScreen.h"
+#include "screen/GameScreen.h"
+#include "screen/GameOverScreen.h"
 
 using namespace sfSnake;
 
@@ -15,6 +15,7 @@ GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
     text_.setFont(font_);
     text_.setString("Your score: " + std::to_string(score) + "!" + "\n\nPress [SPACE] to retry" + "\n\nPress [ESC] to quit");
     text_.setFillColor(sf::Color::Red);
+    text_.setCharacterSize(Game::VideoMode_.width / 30);
 
     sf::FloatRect textBounds = text_.getLocalBounds();
     text_.setOrigin(textBounds.left + textBounds.width / 2,

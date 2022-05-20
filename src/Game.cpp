@@ -24,8 +24,12 @@ sf::VideoMode Game::VideoMode_ = Game::initVideoMode_();
 // Global Screen create, originally MenuScreen
 std::shared_ptr<Screen> Game::Screen_ = std::make_shared<MenuScreen>();
 
+bool Game::GridVisibility_ = false;
+sf::Color Game::BackgroundColor_ = sf::Color(0xfbfbfbff);
+sf::Color Game::GridColor_ = sf::Color(0xeaeaeaee);
+
 Game::Game()
-    : TimePerFrame(sf::seconds(1.f / 10.f))
+    : TimePerFrame(sf::seconds(1.f / 100.f))
 {
     // window create
     window_.create(
@@ -59,7 +63,7 @@ void Game::update(sf::Time delta)
 
 void Game::render()
 {
-    window_.clear();
+    window_.clear(BackgroundColor_);
     Game::Screen_->render(window_);
     window_.display();
 }

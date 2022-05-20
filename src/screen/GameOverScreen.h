@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Screen.h"
+#include "screen/Screen.h"
 
 namespace sfSnake
 {

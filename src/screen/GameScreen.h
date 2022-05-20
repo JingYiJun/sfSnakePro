@@ -3,9 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Screen.h"
+#include "screen/Screen.h"
 #include "element/Snake.h"
 #include "element/Fruit.h"
+#include "element/Grid.h"
 
 namespace sfSnake
 {
@@ -23,6 +24,7 @@ namespace sfSnake
     private:
         Snake snake_;
         std::vector<Fruit> fruit_;
+        Grid grid_;
     };
 }
 

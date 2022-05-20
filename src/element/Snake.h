@@ -1,23 +1,17 @@
-#ifndef SNAKE_H
-#define SNAKE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
 #include <vector>
+#include <deque>
 
-#include "SnakeNode.h"
 #include "Fruit.h"
 
 namespace sfSnake
 {
-    enum class Direction
-    {
-        Left,
-        Right,
-        Up,
-        Down
-    };
+    typedef sf::Vector2f Direction;
+    typedef sf::Vector2f SnakePathNode;
 
     class Snake
     {
@@ -32,23 +26,31 @@ namespace sfSnake
 
         bool hitSelf() const;
 
-        unsigned getSize() const;
+        unsigned getScore() const;
 
     private:
-        void move();
-        void grow();
-        void checkEdgeCollisions();
-        void checkSelfCollisions();
         void initNodes();
 
+        void grow();
+        void move();
+
+        void checkOutOfWindow();
+        void checkSelfCollisions();
+
+        void NodeRender(SnakePathNode last, SnakePathNode now, SnakePathNode middle, sf::RenderWindow &window);
+
+        SnakePathNode toWindow(SnakePathNode node);
         bool hitSelf_;
 
-        sf::Vector2f position_;
         Direction direction_;
-
-        std::vector<SnakeNode> nodes_;
+        float nodeRadius_;
+        std::deque<SnakePathNode> path_;
+        unsigned tailOverlap_;
+        sf::CircleShape nodeShape;
+        sf::RectangleShape nodeMiddle;
 
         static const int InitialSize;
+        unsigned int score_;
 
         sf::SoundBuffer pickupBuffer_;
         sf::Sound pickupSound_;
@@ -57,5 +59,3 @@ namespace sfSnake
         sf::Sound dieSound_;
     };
 }
-
-#endif

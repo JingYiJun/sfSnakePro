@@ -2,20 +2,47 @@
 
 #include <memory>
 #include <iostream>
+#include <cmath>
 
-#include "Snake.h"
+#include "element/Snake.h"
 #include "Game.h"
-#include "Fruit.h"
-#include "SnakeNode.h"
+#include "element/Fruit.h"
+
 #include "screen/GameOverScreen.h"
 
 using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-Snake::Snake() : hitSelf_(false), direction_(Direction::Up)
+static double dis(SnakePathNode node1, SnakePathNode node2)
 {
+    return std::sqrt(std::pow((node1.x - node2.x), 2) + std::pow((node1.y - node2.y), 2));
+}
+
+Snake::Snake()
+    : hitSelf_(false),
+      direction_(Direction(0, -1)),
+      nodeRadius_(Game::VideoMode_.width / 100.0f),
+      nodeShape(nodeRadius_),
+      nodeMiddle(sf::Vector2f(nodeRadius_ * std::sqrt(3), nodeRadius_)),
+      score_(5u)
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
     initNodes();
+
+    nodeShape.setFillColor(sf::Color(0xf1c40fff));
+
+    nodeMiddle.setFillColor(sf::Color(0x1c2833ff));
+
+    sf::FloatRect nodeShapeBounds = nodeShape.getLocalBounds();
+    nodeShape.setOrigin(
+        nodeShapeBounds.left + nodeShapeBounds.width / 2,
+        nodeShapeBounds.top + nodeShapeBounds.height / 2);
+
+    sf::FloatRect nodeMiddleBounds = nodeMiddle.getLocalBounds();
+    nodeMiddle.setOrigin(
+        nodeMiddleBounds.left + nodeMiddleBounds.width / 2,
+        nodeMiddleBounds.top + nodeMiddleBounds.height / 2);
 
     pickupBuffer_.loadFromFile("assets/sounds/pickup.wav");
     pickupSound_.setBuffer(pickupBuffer_);
@@ -28,77 +55,65 @@ Snake::Snake() : hitSelf_(false), direction_(Direction::Up)
 
 void Snake::initNodes()
 {
-    for (int i = 0; i < Snake::InitialSize; ++i)
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    path_.push_back(SnakePathNode(
+        Game::VideoMode_.width / 2.0f,
+        Game::VideoMode_.height / 2.0f));
+    for (int i = 1; i <= 10 * InitialSize; i++)
     {
-        nodes_.push_back(SnakeNode(sf::Vector2f(
-            Game::VideoMode_.width / 2 - SnakeNode::Width / 2,
-            Game::VideoMode_.height / 2 - (SnakeNode::Height / 2) + (SnakeNode::Height * i))));
+        path_.push_back(SnakePathNode(
+            Game::VideoMode_.width / 2.0f,
+            Game::VideoMode_.height / 2.0f + i * nodeRadius_ / 5.0));
     }
+        
 }
 
 void Snake::handleInput()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        direction_ = Direction::Up;
+        direction_ = Direction(0, -1);
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        direction_ = Direction::Down;
+        direction_ = Direction(0, 1);
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        direction_ = Direction::Left;
+        direction_ = Direction(-1, 0);
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        direction_ = Direction::Right;
+        direction_ = Direction(1, 0);
 }
 
 void Snake::update(sf::Time delta)
 {
     move();
-    checkEdgeCollisions();
+    checkOutOfWindow();
     checkSelfCollisions();
 }
 
 void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 {
-    decltype(fruits.begin()) toRemove = fruits.end();
+    auto toRemove = fruits.end();
 
-    for (auto it = fruits.begin(); it != fruits.end(); ++it)
+    for (auto i = fruits.begin(); i != fruits.end(); ++i)
     {
-        if (it->getBounds().intersects(nodes_[0].getBounds()))
-            toRemove = it;
+        if (dis(i->shape_.getPosition(), path_.front()) < nodeRadius_ + 5.0f)
+            toRemove = i;
     }
 
     if (toRemove != fruits.end())
     {
         pickupSound_.play();
         grow();
+        score_++;
         fruits.erase(toRemove);
     }
 }
 
 void Snake::grow()
 {
-    switch (direction_)
-    {
-    case Direction::Up:
-        nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-                                                nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::Height)));
-        break;
-    case Direction::Down:
-        nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-                                                nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::Height)));
-        break;
-    case Direction::Left:
-        nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
-                                                nodes_[nodes_.size() - 1].getPosition().y)));
-        break;
-    case Direction::Right:
-        nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x - SnakeNode::Width,
-                                                nodes_[nodes_.size() - 1].getPosition().y)));
-        break;
-    }
+    tailOverlap_ += 10;
 }
 
-unsigned Snake::getSize() const
+unsigned Snake::getScore() const
 {
-    return nodes_.size();
+    return score_;
 }
 
 bool Snake::hitSelf() const
@@ -106,61 +121,117 @@ bool Snake::hitSelf() const
     return hitSelf_;
 }
 
-void Snake::checkSelfCollisions()
-{
-    SnakeNode &headNode = nodes_[0];
-
-    for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
-    {
-        if (headNode.getBounds().intersects(nodes_[i].getBounds()))
-        {
-            dieSound_.play();
-            sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
-            hitSelf_ = true;
-        }
-    }
-}
-
-void Snake::checkEdgeCollisions()
-{
-    SnakeNode &headNode = nodes_[0];
-
-    if (headNode.getPosition().x <= 0)
-        headNode.setPosition(Game::VideoMode_.width, headNode.getPosition().y);
-    else if (headNode.getPosition().x >= Game::VideoMode_.width)
-        headNode.setPosition(0, headNode.getPosition().y);
-    else if (headNode.getPosition().y <= 0)
-        headNode.setPosition(headNode.getPosition().x, Game::VideoMode_.height);
-    else if (headNode.getPosition().y >= Game::VideoMode_.height)
-        headNode.setPosition(headNode.getPosition().x, 0);
-}
-
 void Snake::move()
 {
-    for (decltype(nodes_.size()) i = nodes_.size() - 1; i > 0; --i)
-    {
-        nodes_[i].setPosition(nodes_.at(i - 1).getPosition());
-    }
+    SnakePathNode &headNode = path_.front();
+    path_.push_front(SnakePathNode(
+        headNode.x + direction_.x * nodeRadius_ / 5.0,
+        headNode.y + direction_.y * nodeRadius_ / 5.0));
+    if (tailOverlap_)
+        tailOverlap_--;
+    else
+        path_.pop_back();
+}
 
-    switch (direction_)
+void Snake::checkSelfCollisions()
+{
+    SnakePathNode &head = path_.front();
+    int count = 0;
+
+    for (auto i = path_.begin(); i != path_.end(); i++, count++)
+        if (count >= 30 && dis(head, *i) < 2.0f * nodeRadius_)
+            hitSelf_ = true;
+}
+
+void Snake::checkOutOfWindow()
+{
+    auto inWindow = [](SnakePathNode &node) -> bool
+    { return node.x >= 0 && node.x <= Game::VideoMode_.width && node.y >= 0 && node.y <= Game::VideoMode_.height; };
+    bool OutOfWindow = true;
+    for (auto i : path_)
     {
-    case Direction::Up:
-        nodes_[0].move(0, -SnakeNode::Height);
-        break;
-    case Direction::Down:
-        nodes_[0].move(0, SnakeNode::Height);
-        break;
-    case Direction::Left:
-        nodes_[0].move(-SnakeNode::Width, 0);
-        break;
-    case Direction::Right:
-        nodes_[0].move(SnakeNode::Width, 0);
-        break;
+        if (inWindow(i))
+            OutOfWindow = false;
     }
+    if (OutOfWindow)
+    {
+        SnakePathNode &tail = path_.back();
+        if (tail.x < 0)
+            for (auto &i : path_)
+                i.x = i.x + Game::VideoMode_.width;
+        else if (tail.x > Game::VideoMode_.width)
+            for (auto &i : path_)
+                i.x = i.x - Game::VideoMode_.width;
+        else if (tail.y < 0)
+            for (auto &i : path_)
+                i.y = i.y + Game::VideoMode_.height;
+        else if (tail.y > Game::VideoMode_.height)
+            for (auto &i : path_)
+                i.y = i.y - Game::VideoMode_.height;
+    }
+}
+
+void Snake::NodeRender(SnakePathNode last, SnakePathNode now, SnakePathNode middle, sf::RenderWindow &window)
+{
+    nodeShape.setPosition(now);
+    window.draw(nodeShape);
+
+    nodeMiddle.setPosition(middle);
+    sf::Vector2f recDirection(now - last);
+    static sf::Vector2f vec2fZero = sf::Vector2f(0.f, 0.f);
+    float angle = std::acos(recDirection.y / dis(recDirection, vec2fZero)) / 3.14159265358979323846 * 180.0;
+    if (last.x >= now.x)
+        nodeMiddle.setRotation(angle);
+    else
+        nodeMiddle.setRotation(-angle);
+    window.draw(nodeMiddle);
+}
+
+SnakePathNode Snake::toWindow(SnakePathNode node)
+{
+    while (node.x < 0)
+        node.x = node.x + Game::VideoMode_.width;
+    while (node.x > Game::VideoMode_.width)
+        node.x = node.x - Game::VideoMode_.width;
+    while (node.y < 0)
+        node.y = node.y + Game::VideoMode_.height;
+    while (node.y > Game::VideoMode_.height)
+        node.y = node.y - Game::VideoMode_.height;
+    return node;
 }
 
 void Snake::render(sf::RenderWindow &window)
 {
-    for (auto node : nodes_)
-        node.render(window);
+    int count = 0;
+    SnakePathNode lastSnakeNode, lastMiddleNode, nowSnakeNode;
+    for (auto i = path_.begin(); i != path_.end(); i++, count++)
+    {
+        if (i == path_.begin())
+        {
+            // TODO 1: render snakehead
+            lastSnakeNode = *i;
+            nodeShape.setPosition(toWindow(lastSnakeNode));
+            window.draw(nodeShape);
+            continue;
+        }
+        if (count % 5 == 0)
+        {
+            if (count % 2)
+                lastMiddleNode = *i;
+            else
+            {
+                nowSnakeNode = *i;
+                NodeRender(lastSnakeNode, nowSnakeNode, lastMiddleNode, window);
+                if (nowSnakeNode.x < 0 || lastSnakeNode.x < 0)
+                    NodeRender(toWindow(lastSnakeNode), toWindow(nowSnakeNode), toWindow(lastMiddleNode), window);
+                if (nowSnakeNode.x > Game::VideoMode_.width || lastSnakeNode.x > Game::VideoMode_.width)
+                    NodeRender(toWindow(lastSnakeNode), toWindow(nowSnakeNode), toWindow(lastMiddleNode), window);
+                if (nowSnakeNode.y < 0 || lastSnakeNode.y < 0)
+                    NodeRender(toWindow(lastSnakeNode), toWindow(nowSnakeNode), toWindow(lastMiddleNode), window);
+                if (nowSnakeNode.y > Game::VideoMode_.height || lastSnakeNode.y > Game::VideoMode_.height)
+                    NodeRender(toWindow(lastSnakeNode), toWindow(nowSnakeNode), toWindow(lastMiddleNode), window);
+                lastSnakeNode = nowSnakeNode;
+            }
+        }
+    }
 }
