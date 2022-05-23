@@ -1,24 +1,25 @@
 #include <SFML/Graphics.hpp>
 
 #include "Fruit.h"
+#include "Game.h"
 
 using namespace sfSnake;
 
-const float Fruit::Radius = 5.f;
+float Fruit::Radius = 5.0f;
 
-Fruit::Fruit(sf::Vector2f position)
+Fruit::Fruit(sf::Vector2f position, sf::Color color, int score)
+    : score_(score)
 {
-    shape_.setPosition(position);
     shape_.setRadius(Fruit::Radius);
-    shape_.setFillColor(sf::Color::Red);
+    sf::FloatRect shapeBounds = shape_.getLocalBounds();
+    shape_.setOrigin(
+        shapeBounds.left + shapeBounds.width / 2,
+        shapeBounds.top + shapeBounds.height / 2);
+    shape_.setPosition(position);
+    shape_.setFillColor(color);
 }
 
 void Fruit::render(sf::RenderWindow &window)
 {
     window.draw(shape_);
-}
-
-sf::FloatRect Fruit::getBounds() const
-{
-    return shape_.getGlobalBounds();
 }

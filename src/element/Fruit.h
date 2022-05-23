@@ -1,24 +1,17 @@
-#ifndef FRUIT_H
-#define FRUIT_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
 namespace sfSnake
 {
-    class Fruit
+    struct Fruit
     {
-    public:
-        Fruit(sf::Vector2f position = sf::Vector2f(0, 0));
+        sf::CircleShape shape_;
+        int score_;
+        static float Radius;
+
+        Fruit(sf::Vector2f position, sf::Color color, int score);
 
         void render(sf::RenderWindow &window);
-
-        sf::FloatRect getBounds() const;
-
-        sf::CircleShape shape_;
-
-    private:
-        static const float Radius;
     };
 }
-
-#endif

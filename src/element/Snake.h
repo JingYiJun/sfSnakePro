@@ -18,26 +18,29 @@ namespace sfSnake
     public:
         Snake();
 
-        void handleInput();
+        void handleInput(sf::RenderWindow &window);
         void update(sf::Time delta);
         void render(sf::RenderWindow &window);
 
-        void checkFruitCollisions(std::vector<Fruit> &fruits);
+        void checkFruitCollisions(std::deque<Fruit> &fruits);
 
         bool hitSelf() const;
 
         unsigned getScore() const;
 
+        void printhead() const;
+
     private:
         void initNodes();
 
-        void grow();
+        void grow(int score);
         void move();
 
         void checkOutOfWindow();
         void checkSelfCollisions();
 
-        void NodeRender(SnakePathNode last, SnakePathNode now, SnakePathNode middle, sf::RenderWindow &window);
+        template <typename T>
+        void renderNode(sf::Vector2f &nowPosition, T &shape, sf::RenderWindow &window, int offset);
 
         SnakePathNode toWindow(SnakePathNode node);
         bool hitSelf_;
@@ -46,8 +49,11 @@ namespace sfSnake
         float nodeRadius_;
         std::deque<SnakePathNode> path_;
         unsigned tailOverlap_;
+
         sf::CircleShape nodeShape;
         sf::RectangleShape nodeMiddle;
+        sf::Texture headTexture;
+        sf::Sprite headSprite;
 
         static const int InitialSize;
         unsigned int score_;

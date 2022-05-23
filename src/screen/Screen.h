@@ -1,5 +1,4 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -10,5 +9,3 @@ public:
 	virtual void update(sf::Time delta) = 0;
 	virtual void render(sf::RenderWindow &window) = 0;
 };
-
-#endif

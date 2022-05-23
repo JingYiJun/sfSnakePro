@@ -1,5 +1,4 @@
-#ifndef GAME_OVER_SCREEN_H
-#define GAME_OVER_SCREEN_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -23,5 +22,3 @@ namespace sfSnake
         unsigned score_;
     };
 }
-
-#endif

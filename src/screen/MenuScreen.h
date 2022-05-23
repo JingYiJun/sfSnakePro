@@ -1,5 +1,4 @@
-#ifndef MENU_SCREEN_H
-#define MENU_SCREEN_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -22,5 +21,3 @@ namespace sfSnake
         sf::Text optionText_;
     };
 }
-
-#endif

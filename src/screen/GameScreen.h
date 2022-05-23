@@ -1,7 +1,7 @@
-#ifndef GAME_SCREEN_H
-#define GAME_SCREEN_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
+#include <deque>
 
 #include "screen/Screen.h"
 #include "element/Snake.h"
@@ -23,9 +23,7 @@ namespace sfSnake
 
     private:
         Snake snake_;
-        std::vector<Fruit> fruit_;
+        std::deque<Fruit> fruit_;
         Grid grid_;
     };
 }
-
-#endif

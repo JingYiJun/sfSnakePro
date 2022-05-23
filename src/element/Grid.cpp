@@ -13,6 +13,17 @@ void Grid::render(sf::RenderWindow &window)
 {
     gridVline.setFillColor(Game::GridColor_);
     gridHline.setFillColor(Game::GridColor_);
-    window.draw(gridVline);
-    window.draw(gridHline);
+
+    static float gridSpace = Game::VideoMode_.width / 50.0f;
+    for (float i = 0.f; i < Game::VideoMode_.width; i += gridSpace)
+    {
+        gridVline.setPosition(i, 0);
+        window.draw(gridVline);
+    }
+
+    for (float i = 0.f; i < Game::VideoMode_.height; i += gridSpace)
+    {
+        gridHline.setPosition(0, i);
+        window.draw(gridHline);
+    }
 }

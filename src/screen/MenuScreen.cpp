@@ -39,13 +39,7 @@ MenuScreen::MenuScreen()
 void MenuScreen::handleInput(sf::RenderWindow &window)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
         Game::Screen_ = std::make_shared<GameScreen>();
-        if (Game::Screen_ == nullptr)
-        {
-            std::cout << "Fail to create GameScreen"<< std::endl;
-        }
-    }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         window.close();
 }
