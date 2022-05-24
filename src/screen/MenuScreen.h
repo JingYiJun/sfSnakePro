@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "screen/Screen.h"
+#include <unordered_map>
+#include <string>
 
 namespace sfSnake
 {
@@ -17,7 +19,10 @@ namespace sfSnake
 
     private:
         sf::Font font_;
-        sf::Text titleText_;
-        sf::Text optionText_;
+        sf::Texture titleTexture_;
+        sf::Sprite titleSprite_;
+        std::unordered_map<std::string, sf::Texture> buttonTexture_;
+        std::unordered_map<std::string, sf::Sprite> buttonSprite_;
+        std::unordered_map<std::string, bool> buttonFocused_;
     };
 }

@@ -27,6 +27,10 @@ std::shared_ptr<Screen> Game::Screen_ = std::make_shared<MenuScreen>();
 bool Game::GridVisibility_ = false;
 sf::Color Game::BackgroundColor_ = sf::Color(0xfbfbfbff);
 sf::Color Game::GridColor_ = sf::Color(0xeaeaeaee);
+sf::Clock Game::mouseButtonClock = sf::Clock();
+sf::Time Game::mouseButtonCDtime = sf::Time();
+
+bool Game::mouseButtonLocked = false;
 
 Game::Game()
     : TimePerFrame(sf::seconds(1.f / 100.f))
@@ -72,13 +76,14 @@ void Game::run()
 {
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    mouseButtonClock.restart();
 
     while (window_.isOpen())
     {
         sf::Time delta = clock.restart();
         timeSinceLastUpdate += delta;
 
-        while (timeSinceLastUpdate > Game::TimePerFrame)
+        while (timeSinceLastUpdate > TimePerFrame)
         {
             timeSinceLastUpdate -= TimePerFrame;
             handleInput();
@@ -88,6 +93,15 @@ void Game::run()
 
             // limit the FramePerSecond;
             render();
+        }
+
+        delta = mouseButtonClock.restart();
+        mouseButtonCDtime += delta;
+
+        while (mouseButtonCDtime.asSeconds() > 0.5f)
+        {
+            mouseButtonCDtime -= sf::seconds(0.5f);
+            mouseButtonLocked = false;
         }
     }
 }

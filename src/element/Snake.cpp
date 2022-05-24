@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <iostream>
-#include <cmath>
 
 #include "element/Snake.h"
 #include "Game.h"
@@ -14,13 +13,9 @@ using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-static double dis(SnakePathNode node1, SnakePathNode node2)
-{
-    return std::sqrt(std::pow((node1.x - node2.x), 2) + std::pow((node1.y - node2.y), 2));
-}
-
 Snake::Snake()
     : hitSelf_(false),
+      speedup_(false),
       direction_(Direction(0, -1)),
       nodeRadius_(Game::VideoMode_.width / 100.0f),
       tailOverlap_(0u),
@@ -92,12 +87,15 @@ void Snake::handleInput(sf::RenderWindow &window)
     static double directionSize;
 
     // Supported MouseControl
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
+    if (!Game::mouseButtonLocked)
     {
-        direction_ = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)) - toWindow(path_.front());
-        directionSize = dis(direction_, sf::Vector2f(0, 0));
-        direction_.x /= directionSize;
-        direction_.y /= directionSize;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        {
+            direction_ = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)) - toWindow(path_.front());
+            directionSize = dis(direction_, sf::Vector2f(0, 0));
+            direction_.x /= directionSize;
+            direction_.y /= directionSize;
+        }
     }
 
     // Supported Joystick
@@ -113,6 +111,12 @@ void Snake::handleInput(sf::RenderWindow &window)
             direction_.y /= directionSize;
         }
     }
+
+    // support Speed up
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        speedup_ = true;
+    else
+        speedup_ = false;
 }
 
 void Snake::update(sf::Time delta)
@@ -165,13 +169,17 @@ bool Snake::hitSelf() const
 void Snake::move()
 {
     SnakePathNode &headNode = path_.front();
-    path_.push_front(SnakePathNode(
-        headNode.x + direction_.x * nodeRadius_ / 5.0,
-        headNode.y + direction_.y * nodeRadius_ / 5.0));
-    if (tailOverlap_)
-        --tailOverlap_;
-    else
-        path_.pop_back();
+    int times = speedup_ ? 2 : 1;
+    for (int i = 1; i <= times; i++)
+    {
+        path_.push_front(SnakePathNode(
+            headNode.x + direction_.x * i * nodeRadius_ / 5.0,
+            headNode.y + direction_.y * i * nodeRadius_ / 5.0));
+        if (tailOverlap_)
+            tailOverlap_--;
+        else
+            path_.pop_back();
+    }
 }
 
 void Snake::checkSelfCollisions()

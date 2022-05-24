@@ -105,3 +105,14 @@ this change log is to log the difference from origin sfSnake on https://github.c
     2. `fruit` 的存储也由 `vector` 改为 `deque`，删除一个水果的效率提高了。
     3. 新增5种水果的表示，用score存储每种水果的得分。
     4. 修改了随机生成水果的函数，现在可以按照要求生成五种水果了。
+
+2. 网格的实现和拓展
+    1. 在`Grid.h`和`Grid.cpp`中声明并实现了网格类和网格的渲染
+    2. 实现了按G键切换开启、关闭网格状态
+
+## 20220524
+
+1. 游戏玩法迭代
+    1. 按空格键加速
+
+2. UI优化，新增自己画的主题title，并且设计了UI交互逻辑

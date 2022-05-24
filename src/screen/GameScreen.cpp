@@ -27,6 +27,7 @@ void GameScreen::handleInput(sf::RenderWindow &window)
         Game::GridVisibility_ = 1 ^ Game::GridVisibility_;
         clock.restart();
     }
+
 }
 
 void GameScreen::update(sf::Time delta)
