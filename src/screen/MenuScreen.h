@@ -3,7 +3,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "screen/Screen.h"
+#include "Game.h"
 #include <unordered_map>
+#include <vector>
 #include <string>
 
 namespace sfSnake
@@ -21,8 +23,7 @@ namespace sfSnake
         sf::Font font_;
         sf::Texture titleTexture_;
         sf::Sprite titleSprite_;
-        std::unordered_map<std::string, sf::Texture> buttonTexture_;
-        std::unordered_map<std::string, sf::Sprite> buttonSprite_;
-        std::unordered_map<std::string, bool> buttonFocused_;
+        std::vector<Button> button_;
+        unsigned nowFocused;
     };
 }

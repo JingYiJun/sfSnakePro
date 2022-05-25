@@ -114,5 +114,7 @@ this change log is to log the difference from origin sfSnake on https://github.c
 
 1. 游戏玩法迭代
     1. 按空格键加速
+    2. 鼠标点击控制方向，长按拖拽可以持续控制方向
+    3. 新增手柄操作控制方向
 
 2. UI优化，新增自己画的主题title，并且设计了UI交互逻辑

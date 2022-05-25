@@ -27,16 +27,33 @@ namespace sfSnake
 
         static sf::VideoMode VideoMode_;
         static std::shared_ptr<Screen> Screen_;
+        static std::shared_ptr<Screen> TmpScreen_;
 
-        static bool GridVisibility_;
-        static sf::Color BackgroundColor_;
-        static sf::Color GridColor_;
+        static int GridVisibility_;
+        static int BackgroundColor_;
+        static int GridColor_;
 
         static std::vector<int> ScoreList_;
 
         static bool mouseButtonLocked;
         static sf::Clock mouseButtonClock;
         static sf::Time mouseButtonCDtime;
+
+        static bool keyboardLocked;
+        static sf::Clock keyboardClock;
+        static sf::Time keyboardCDtime;
+
+        static int inputDevice; // 0 for keyboard, 1 for mouse, 2 for joystick
+
+        class Color
+        {
+        public:
+            static const sf::Color Yellow;
+            static const sf::Color Green;
+            static const sf::Color Background[3];
+            static const sf::Color Grid[3];
+            static const sf::Color NotSeleted;
+        };
 
     private:
         sf::RenderWindow window_;
@@ -60,4 +77,14 @@ namespace sfSnake
     {
         return std::sqrt(std::pow((node1.x - node2.x), 2) + std::pow((node1.y - node2.y), 2));
     }
+
+    struct Button
+    {
+        sf::Texture texture_;
+        sf::Sprite sprite_;
+        bool focused_;
+
+        Button();
+        void update(std::string filename, float scale);
+    };
 }

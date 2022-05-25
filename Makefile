@@ -1,7 +1,7 @@
 CC=gcc
 CXX=g++
 CC_FLAGS=-g -static -Wall -DSFML_STATIC #-Wl,--stack=268435456
-CXX_FLAGS=-g -static -std=c++17 -Wall -O2 -DSFML_STATIC #-Wl,--stack=268435456
+CXX_FLAGS=-g -static -std=c++17 -Wall -O0 -DSFML_STATIC #-Wl,--stack=268435456
 
 rm=rm -fr
 mkdir=mkdir2 -p

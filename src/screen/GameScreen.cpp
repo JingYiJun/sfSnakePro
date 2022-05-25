@@ -6,6 +6,7 @@
 
 #include "screen/GameScreen.h"
 #include "screen/GameOverScreen.h"
+#include "screen/OptionScreen.h"
 #include "Game.h"
 
 using namespace sfSnake;
@@ -17,17 +18,30 @@ GameScreen::GameScreen() : snake_()
 void GameScreen::handleInput(sf::RenderWindow &window)
 {
     snake_.handleInput(window);
-    static sf::Clock clock;
-    static sf::Time timeSinceLastPressed;
-    timeSinceLastPressed = clock.getElapsedTime();
-    if (timeSinceLastPressed < sf::seconds(1 / 2.0f))
-        return;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-    {
-        Game::GridVisibility_ = 1 ^ Game::GridVisibility_;
-        clock.restart();
-    }
 
+    if (!Game::keyboardLocked)
+    {
+        static bool keyboardPressed;
+        keyboardPressed = false;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+        {
+            Game::GridVisibility_ = 1 ^ Game::GridVisibility_;
+            keyboardPressed = true;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            Game::TmpScreen_ = Game::Screen_;
+            Game::Screen_ = std::make_shared<OptionScreen>();
+            keyboardPressed = true;
+        }
+
+        if (keyboardPressed)
+        {
+            Game::keyboardClock.restart();
+            Game::keyboardLocked = true;
+        }
+    }
 }
 
 void GameScreen::update(sf::Time delta)
