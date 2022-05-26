@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "screen/Screen.h"
+#include "element/Button.h"
 
 namespace sfSnake
 {
@@ -18,7 +19,7 @@ namespace sfSnake
     private:
         sf::Font font_;
         sf::Text text_;
-
+        std::vector<Button> button_;
         unsigned score_;
     };
 }

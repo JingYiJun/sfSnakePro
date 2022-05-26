@@ -113,124 +113,112 @@ OptionScreen::OptionScreen()
                                 sf::Vector2f(Game::VideoMode_.width / 5.0f * 4.0f, Game::VideoMode_.height / 4.0f * 3.0f));
 
     returnButton_.update("assets/image/returnUI.png", 1 / 16.0f);
-    returnButton_.sprite_.setPosition(Game::VideoMode_.width / 15.0f, Game::VideoMode_.width / 15.0f);
+    returnButton_.setPosition(Game::VideoMode_.width / 15.0f, Game::VideoMode_.width / 15.0f);
 }
 
 void OptionScreen::handleInput(sf::RenderWindow &window)
 {
-    switch (Game::inputDevice)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
-    case 0:
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        Game::keyboardClock.restart();
+        Game::keyboardLocked = true;
+        Game::Screen_ = Game::TmpScreen_;
+        Game::TmpScreen_ = nullptr;
+        return;
+    }
+
+    auto mousePosition = sf::Mouse::getPosition(window);
+    GridShowfocused_ = -1;
+    GridColorfocused_ = -1;
+    BGColorfocused_ = -1;
+
+    if (GridShowOptions_[0].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        GridShowfocused_ = 0;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::Screen_ = Game::TmpScreen_;
-            Game::TmpScreen_ = nullptr;
-            Game::keyboardClock.restart();
-            Game::keyboardLocked = true;
+            Game::GridVisibility_ = 0;
             return;
         }
-        break;
-    case 1:
-        static sf::Vector2i mousePosition;
-        mousePosition = sf::Mouse::getPosition(window);
-        GridShowfocused_ = -1;
-        GridColorfocused_ = -1;
-        BGColorfocused_ = -1;
+    }
+    if (GridShowOptions_[1].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        GridShowfocused_ = 1;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            Game::GridVisibility_ = 1;
+            return;
+        }
+    }
 
-        if (GridShowOptions_[0].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    if (GridColorOptions_[0].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        GridColorfocused_ = 0;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            GridShowfocused_ = 0;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::GridVisibility_ = 0;
-                return;
-            }
+            Game::GridColor_ = 0;
+            return;
         }
-        if (GridShowOptions_[1].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    }
+    if (GridColorOptions_[1].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        GridColorfocused_ = 1;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            GridShowfocused_ = 1;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::GridVisibility_ = 1;
-                return;
-            }
+            Game::GridColor_ = 1;
+            return;
         }
+    }
+    if (GridColorOptions_[2].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        GridColorfocused_ = 2;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            Game::GridColor_ = 2;
+            return;
+        }
+    }
 
-        if (GridColorOptions_[0].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    if (BGColorOptions_[0].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        BGColorfocused_ = 0;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            GridColorfocused_ = 0;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::GridColor_ = 0;
-                return;
-            }
+            Game::BackgroundColor_ = 0;
+            return;
         }
-        if (GridColorOptions_[1].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    }
+    if (BGColorOptions_[1].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        BGColorfocused_ = 1;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            GridColorfocused_ = 1;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::GridColor_ = 1;
-                return;
-            }
+            Game::BackgroundColor_ = 1;
+            return;
         }
-        if (GridColorOptions_[2].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    }
+    if (BGColorOptions_[2].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    {
+        BGColorfocused_ = 2;
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            GridColorfocused_ = 2;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::GridColor_ = 2;
-                return;
-            }
+            Game::BackgroundColor_ = 2;
+            return;
         }
+    }
 
-        if (BGColorOptions_[0].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+    returnButton_.focused(false);
+    if (returnButton_.contain(mousePosition))
+    {
+        returnButton_.focused(true);
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            BGColorfocused_ = 0;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::BackgroundColor_ = 0;
-                return;
-            }
+            Game::mouseButtonCDtime = sf::Time::Zero;
+            Game::mouseButtonLocked = true;
+            Game::Screen_ = Game::TmpScreen_;
+            Game::TmpScreen_ = nullptr;
+            return;
         }
-        if (BGColorOptions_[1].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
-        {
-            BGColorfocused_ = 1;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::BackgroundColor_ = 1;
-                return;
-            }
-        }
-        if (BGColorOptions_[2].text_.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
-        {
-            BGColorfocused_ = 2;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::BackgroundColor_ = 2;
-                return;
-            }
-        }
-
-        returnButton_.focused_ = false;
-        if (dis(mousePosition, returnButton_.sprite_.getPosition()) < (returnButton_.sprite_.getGlobalBounds().width / 2.0))
-        {
-            returnButton_.focused_ = true;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                Game::Screen_ = Game::TmpScreen_;
-                Game::TmpScreen_ = nullptr;
-                Game::mouseButtonCDtime = sf::Time::Zero;
-                Game::mouseButtonLocked = true;
-                return;
-            }
-        }
-        break;
-    case 2:
-        break;
-
-    default:
-        break;
     }
 }
 
@@ -271,12 +259,5 @@ void OptionScreen::render(sf::RenderWindow &window)
     for (auto &i : BGColorOptions_)
         window.draw(i.text_);
 
-    if (returnButton_.focused_)
-    {
-        returnButton_.sprite_.setColor(sf::Color(sf::Color::Green));
-        window.draw(returnButton_.sprite_);
-        returnButton_.sprite_.setColor(sf::Color(sf::Color::White));
-    }
-    else
-        window.draw(returnButton_.sprite_);
+    returnButton_.render(window);
 }

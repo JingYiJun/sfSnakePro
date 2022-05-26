@@ -1,35 +1,31 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <deque>
 
 #include "screen/Screen.h"
-#include "element/Snake.h"
-#include "element/Fruit.h"
-#include "element/Grid.h"
 #include "element/Button.h"
+#include "Game.h"
+
+#include <vector>
+#include <string>
 
 namespace sfSnake
 {
-    class GameScreen : public Screen
+    class PauseScreen : public Screen
     {
     public:
-        GameScreen();
+        PauseScreen();
 
         void handleInput(sf::RenderWindow &window) override;
         void update(sf::Time delta) override;
         void render(sf::RenderWindow &window) override;
 
-        void generateFruit();
-
     private:
-        Snake snake_;
-        std::deque<Fruit> fruit_;
-        Grid grid_;
-
-        Button pauseButton_;
-
         sf::Font font_;
-        sf::Text score_;
+        sf::Texture titleTexture_;
+        sf::Sprite titleSprite_;
+        std::vector<Button> button_;
+        Button returnButton_;
+        unsigned nowFocused;
     };
 }

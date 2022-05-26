@@ -29,15 +29,8 @@ Snake::Snake()
 
     nodeMiddle.setFillColor(sf::Color(0x1c2833ff));
 
-    sf::FloatRect nodeShapeBounds = nodeShape.getLocalBounds();
-    nodeShape.setOrigin(
-        nodeShapeBounds.left + nodeShapeBounds.width / 2,
-        nodeShapeBounds.top + nodeShapeBounds.height / 2);
-
-    sf::FloatRect nodeMiddleBounds = nodeMiddle.getLocalBounds();
-    nodeMiddle.setOrigin(
-        nodeMiddleBounds.left + nodeMiddleBounds.width / 2,
-        nodeMiddleBounds.top + nodeMiddleBounds.height / 2);
+    setOriginMiddle(nodeShape);
+    setOriginMiddle(nodeMiddle);
 
     headTexture.loadFromFile("assets/image/snakeHeadImage.png");
     headTexture.setSmooth(true);
@@ -46,10 +39,7 @@ Snake::Snake()
     headSprite.setTexture(headTexture);
     headSprite.setScale(headScale, headScale);
 
-    sf::FloatRect headBounds = headSprite.getLocalBounds();
-    headSprite.setOrigin(
-        headBounds.left + headBounds.width / 2,
-        headBounds.top + headBounds.height / 2);
+    setOriginMiddle(headSprite);
 
     pickupBuffer_.loadFromFile("assets/sounds/pickup.wav");
     pickupSound_.setBuffer(pickupBuffer_);
@@ -86,33 +76,22 @@ void Snake::handleInput(sf::RenderWindow &window)
 
     static double directionSize;
 
-    // Supported MouseControl
     if (!Game::mouseButtonLocked)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right))
         {
-            direction_ = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)) - toWindow(path_.front());
-            directionSize = dis(direction_, sf::Vector2f(0, 0));
-            direction_.x /= directionSize;
-            direction_.y /= directionSize;
+            static sf::Vector2i MousePosition;
+            MousePosition = sf::Mouse::getPosition(window);
+            if (dis(MousePosition, sf::Vector2f(Game::VideoMode_.width / 15.0f * 14.0f, Game::VideoMode_.width / 15.0f)) > Game::VideoMode_.width / 16.0f)
+            {
+                direction_ = static_cast<sf::Vector2f>(MousePosition) - toWindow(path_.front());
+                directionSize = length(direction_);
+                direction_.x /= directionSize;
+                direction_.y /= directionSize;
+            }
         }
     }
 
-    // Supported Joystick
-    if (sf::Joystick::isConnected(0))
-    {
-        float posX = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
-        float posY = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
-        if (std::fabs(posX) >= 1e5 && std::fabs(posX) >= 1e5)
-        {
-            direction_ = sf::Vector2f(posX, -posY);
-            directionSize = dis(direction_, sf::Vector2f(0, 0));
-            direction_.x /= directionSize;
-            direction_.y /= directionSize;
-        }
-    }
-
-    // support Speed up
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         speedup_ = true;
     else
@@ -250,7 +229,7 @@ void Snake::render(sf::RenderWindow &window)
     wNowHeadNode = toWindow(lastSnakeNode);
     headSprite.setPosition(wNowHeadNode);
     recDirection = direction_;
-    angle = std::acos(recDirection.y / dis(recDirection, sf::Vector2f(0.f, 0.f))) / 3.14159265358979323846 * 180.0;
+    angle = std::acos(recDirection.y / length(recDirection)) / 3.14159265358979323846 * 180.0;
     if (direction_.x > 0)
         angle = -angle;
     headSprite.setRotation(angle);
@@ -269,7 +248,7 @@ void Snake::render(sf::RenderWindow &window)
                 nowSnakeNode = *i;
 
                 recDirection = nowSnakeNode - lastSnakeNode;
-                angle = std::acos(recDirection.y / dis(recDirection, sf::Vector2f(0.f, 0.f))) / 3.14159265358979323846 * 180.0;
+                angle = std::acos(recDirection.y / length(recDirection)) / 3.14159265358979323846 * 180.0;
                 if (recDirection.x > 0)
                     angle = -angle;
                 nodeMiddle.setRotation(angle);

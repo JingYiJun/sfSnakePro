@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "screen/Screen.h"
-#include "Game.h"
-#include <unordered_map>
+#include "element/Button.h"
+
 #include <vector>
 #include <string>
 

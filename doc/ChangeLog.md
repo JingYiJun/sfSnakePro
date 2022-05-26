@@ -118,3 +118,16 @@ this change log is to log the difference from origin sfSnake on https://github.c
     3. 新增手柄操作控制方向
 
 2. UI优化，新增自己画的主题title，并且设计了UI交互逻辑
+
+## 22020525
+
+1. 增加了 OptionScreen, 现在可以在OptionScreen里面切换颜色状态了
+2. 小幅度优化了UI设计，新增返回UI和重置UI
+3. 设计了键盘锁和鼠标锁，防止误触
+
+## 220526
+
+1. 删除手柄控制和键盘控制窗口切换
+2. 全面统一UI设计，通过Button类操作并显示
+3. 增加 `PauseScreen` 类，在游戏中暂停可以进入暂停界面，可以进行设置、重新开始、退出、返回等操作
+4. 游戏中实时显示分数

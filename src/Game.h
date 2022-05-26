@@ -28,12 +28,11 @@ namespace sfSnake
         static sf::VideoMode VideoMode_;
         static std::shared_ptr<Screen> Screen_;
         static std::shared_ptr<Screen> TmpScreen_;
+        static std::shared_ptr<Screen> TmpGameScreen_;
 
         static int GridVisibility_;
         static int BackgroundColor_;
         static int GridColor_;
-
-        static std::vector<int> ScoreList_;
 
         static bool mouseButtonLocked;
         static sf::Clock mouseButtonClock;
@@ -78,13 +77,9 @@ namespace sfSnake
         return std::sqrt(std::pow((node1.x - node2.x), 2) + std::pow((node1.y - node2.y), 2));
     }
 
-    struct Button
+    template <typename T>
+    double length(sf::Vector2<T> node)
     {
-        sf::Texture texture_;
-        sf::Sprite sprite_;
-        bool focused_;
-
-        Button();
-        void update(std::string filename, float scale);
-    };
+        return std::sqrt(std::pow((node.x), 2) + std::pow((node.y), 2));
+    }
 }

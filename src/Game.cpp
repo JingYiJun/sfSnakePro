@@ -24,6 +24,7 @@ sf::VideoMode Game::VideoMode_ = Game::initVideoMode_();
 // Global Screen create, originally MenuScreen
 std::shared_ptr<Screen> Game::Screen_ = std::make_shared<MenuScreen>();
 std::shared_ptr<Screen> Game::TmpScreen_ = nullptr;
+std::shared_ptr<Screen> Game::TmpGameScreen_ = nullptr;
 
 int Game::GridVisibility_ = 0;
 int Game::BackgroundColor_ = 0;
@@ -66,19 +67,6 @@ void Game::handleInput()
     {
         switch (event.type)
         {
-        case sf::Event::KeyPressed:
-            inputDevice = 0;
-            window_.setMouseCursorVisible(false);
-            break;
-        case sf::Event::MouseMoved:
-            inputDevice = 1;
-            window_.setMouseCursorVisible(true);
-            break;
-        case sf::Event::JoystickMoved:
-        case sf::Event::JoystickButtonPressed:
-            inputDevice = 2;
-            window_.setMouseCursorVisible(false);
-            break;
         case sf::Event::Closed:
             window_.close();
             break;
@@ -86,8 +74,8 @@ void Game::handleInput()
             break;
         }
     }
-
-    Game::Screen_->handleInput(window_);
+    if (sf::FloatRect(sf::Vector2f(0, 0), sf::Vector2f(Game::VideoMode_.width, Game::VideoMode_.height)).contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window_))))
+        Game::Screen_->handleInput(window_);
 }
 
 void Game::update(sf::Time delta)
@@ -129,7 +117,7 @@ void Game::run()
         delta = mouseButtonClock.restart();
         mouseButtonCDtime += delta;
 
-        while (mouseButtonCDtime.asSeconds() > 0.5f)
+        if (mouseButtonCDtime.asSeconds() > 0.5f)
         {
             mouseButtonCDtime -= sf::seconds(0.5f);
             mouseButtonLocked = false;
@@ -138,25 +126,10 @@ void Game::run()
         delta = keyboardClock.restart();
         keyboardCDtime += delta;
 
-        while (keyboardCDtime.asSeconds() > 0.5f)
+        if (keyboardCDtime.asSeconds() > 0.5f)
         {
             keyboardCDtime -= sf::seconds(0.5f);
             keyboardLocked = false;
         }
     }
-}
-
-Button::Button()
-    : focused_{false}
-{
-}
-
-void Button::update(std::string filename, float scale)
-{
-    if (!texture_.loadFromFile(filename))
-        std::cout << "error" << std::endl;
-    texture_.setSmooth(true);
-    sprite_.setTexture(texture_);
-    sf::FloatRect bounds = setOriginMiddle(sprite_);
-    sprite_.setScale(Game::VideoMode_.width / bounds.width * scale, Game::VideoMode_.width / bounds.width * scale);
 }

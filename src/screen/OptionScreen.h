@@ -7,7 +7,7 @@
 #include "screen/Screen.h"
 #include "screen/GameScreen.h"
 #include "element/Grid.h"
-#include "Game.h"
+#include "element/Button.h"
 
 namespace sfSnake
 {

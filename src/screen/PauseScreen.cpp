@@ -4,13 +4,13 @@
 #include <iostream>
 
 #include "screen/GameScreen.h"
-#include "screen/MenuScreen.h"
+#include "screen/PauseScreen.h"
 #include "screen/OptionScreen.h"
 #include "Game.h"
 
 using namespace sfSnake;
 
-MenuScreen::MenuScreen()
+PauseScreen::PauseScreen()
     : button_(3)
 {
     font_.loadFromFile("assets/fonts/SourceHanSansSC-Bold.otf");
@@ -24,21 +24,23 @@ MenuScreen::MenuScreen()
     titleSprite_.setPosition(Game::VideoMode_.width / 2, Game::VideoMode_.height / 4);
 
     button_[0].update("assets/image/optionUI.png");
-    button_[1].update("assets/image/startUI.png");
+    button_[1].update("assets/image/restartUI.png");
     button_[2].update("assets/image/exitUI.png");
+    returnButton_.update("assets/image/returnUI.png", 1 / 16.0f);
 
     button_[0].setPosition(Game::VideoMode_.width / 3.0, Game::VideoMode_.height / 5.0 * 3.0);
     button_[1].setPosition(Game::VideoMode_.width / 2.0, Game::VideoMode_.height / 5.0 * 3.0);
     button_[2].setPosition(Game::VideoMode_.width / 3.0 * 2.0, Game::VideoMode_.height / 5.0 * 3.0);
+    returnButton_.setPosition(Game::VideoMode_.width / 15.0, Game::VideoMode_.width / 15.0);
 }
 
-void MenuScreen::handleInput(sf::RenderWindow &window)
+void PauseScreen::handleInput(sf::RenderWindow &window)
 {
-    static sf::Vector2i mousePosition;
-    mousePosition = sf::Mouse::getPosition(window);
+    auto mousePosition = sf::Mouse::getPosition(window);
 
     for (auto &i : button_)
         i.focused(false);
+    returnButton_.focused(false);
 
     if (button_[0].contain(mousePosition))
     {
@@ -74,9 +76,22 @@ void MenuScreen::handleInput(sf::RenderWindow &window)
             return;
         }
     }
+
+    if (returnButton_.contain(mousePosition))
+    {
+        returnButton_.focused(true);
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            Game::mouseButtonCDtime = Game::mouseButtonClock.restart();
+            Game::mouseButtonLocked = true;
+            Game::Screen_ = Game::TmpGameScreen_;
+            Game::TmpGameScreen_ = nullptr;
+            return;
+        }
+    }
 }
 
-void MenuScreen::update(sf::Time delta)
+void PauseScreen::update(sf::Time delta)
 {
     static bool movingLeft = false;
     static bool movingRight = true;
@@ -104,9 +119,12 @@ void MenuScreen::update(sf::Time delta)
     }
 }
 
-void MenuScreen::render(sf::RenderWindow &window)
+void PauseScreen::render(sf::RenderWindow &window)
 {
     window.draw(titleSprite_);
     for (auto &button : button_)
+    {
         button.render(window);
+    }
+    returnButton_.render(window);
 }

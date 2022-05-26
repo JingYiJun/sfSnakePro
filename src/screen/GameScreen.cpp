@@ -6,40 +6,45 @@
 
 #include "screen/GameScreen.h"
 #include "screen/GameOverScreen.h"
-#include "screen/OptionScreen.h"
-#include "Game.h"
+#include "screen/PauseScreen.h"
 
 using namespace sfSnake;
 
-GameScreen::GameScreen() : snake_()
+GameScreen::GameScreen()
+    : snake_(), grid_(), pauseButton_()
 {
+    pauseButton_.update("assets/image/pauseUI.png", 1 / 16.0f);
+    pauseButton_.setPosition(Game::VideoMode_.width / 15.0 * 14.0, Game::VideoMode_.width / 15.0);
+
+    font_.loadFromFile("assets/fonts/SourceHanSansSC-Bold.otf");
+
+    score_.setFont(font_);
+    score_.setString(sf::String(L"分数:\t") + std::to_string(snake_.getScore()));
+    score_.setCharacterSize(Game::VideoMode_.width / 25.0f);
+    score_.setFillColor(Game::Color::Yellow);
+    setOriginMiddle(score_);
+    score_.setPosition(Game::VideoMode_.width / 2.0f, Game::VideoMode_.width * 0.05f);
 }
 
 void GameScreen::handleInput(sf::RenderWindow &window)
 {
     snake_.handleInput(window);
 
-    if (!Game::keyboardLocked)
+    static sf::Vector2i mousePosition;
+    mousePosition = sf::Mouse::getPosition(window);
+
+    pauseButton_.focused(false);
+
+    if (pauseButton_.contain(mousePosition))
     {
-        static bool keyboardPressed;
-        keyboardPressed = false;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+        pauseButton_.focused(true);
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::GridVisibility_ = 1 ^ Game::GridVisibility_;
-            keyboardPressed = true;
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            Game::TmpScreen_ = Game::Screen_;
-            Game::Screen_ = std::make_shared<OptionScreen>();
-            keyboardPressed = true;
-        }
-
-        if (keyboardPressed)
-        {
-            Game::keyboardClock.restart();
-            Game::keyboardLocked = true;
+            Game::mouseButtonCDtime = sf::Time::Zero;
+            Game::mouseButtonLocked = true;
+            Game::TmpGameScreen_ = Game::Screen_;
+            Game::Screen_ = std::make_shared<PauseScreen>();
+            return;
         }
     }
 }
@@ -56,6 +61,8 @@ void GameScreen::update(sf::Time delta)
     {
         Game::Screen_ = std::make_shared<GameOverScreen>(snake_.getScore());
     }
+
+    score_.setString(sf::String(L"分数:\t") + std::to_string(snake_.getScore()));
 }
 
 void GameScreen::render(sf::RenderWindow &window)
@@ -65,6 +72,8 @@ void GameScreen::render(sf::RenderWindow &window)
     snake_.render(window);
     for (auto fruit : fruit_)
         fruit.render(window);
+    pauseButton_.render(window);
+    window.draw(score_);
 }
 
 void GameScreen::generateFruit()
@@ -72,8 +81,8 @@ void GameScreen::generateFruit()
     static std::default_random_engine engine(time(NULL));
     static std::default_random_engine colorEngine(time(NULL));
 
-    static std::uniform_int_distribution<int> xPos(Fruit::Radius * 4, Game::VideoMode_.width - Fruit::Radius * 4);
-    static std::uniform_int_distribution<int> yPos(Fruit::Radius * 4, Game::VideoMode_.height - Fruit::Radius * 4);
+    static std::uniform_int_distribution<int> xPos(Game::VideoMode_.width / 15.0f, Game::VideoMode_.width - Game::VideoMode_.width / 10.0f);
+    static std::uniform_int_distribution<int> yPos(Game::VideoMode_.width / 10.0f, Game::VideoMode_.height - Game::VideoMode_.width / 15.0f);
     static std::uniform_int_distribution<int> fruitColor(0, 7);
 
     switch (fruitColor(colorEngine))
