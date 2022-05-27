@@ -4,6 +4,7 @@
 
 #include "screen/Screen.h"
 #include "element/Button.h"
+#include "screen/OptionScreen.h"
 
 namespace sfSnake
 {
@@ -21,5 +22,7 @@ namespace sfSnake
         sf::Text text_;
         std::vector<Button> button_;
         unsigned score_;
+        OptionButton helpButton_;
+        OptionButton aboutButton_;
     };
 }

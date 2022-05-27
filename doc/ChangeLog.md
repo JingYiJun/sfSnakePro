@@ -79,15 +79,10 @@ this change log is to log the difference from origin sfSnake on https://github.c
     改版：
     ![占用率2](image/改版的占用率.png "改版的占用率")
 
-    1. 使用 `sf::VideoMode::getDesktopMode()` 函数获取当前桌面分辨率，将窗口大小设定为当前窗口分辨率的一半
+    2. 使用 `sf::VideoMode::getDesktopMode()` 函数获取当前桌面分辨率，将窗口大小设定为当前窗口分辨率的一半
     以适配不同适配分辨率的机器，后续可能会增加全屏模式。
 
-    1. 类的静态中成员增加了作为游戏全局设置的变量，包括
-    ```c++
-    static bool GridVisibility_;       //全局网格可见性
-    static sf::Color BackgroundColor_; //背景颜色
-    static sf::Color GridColor_;       //网格颜色
-    ```
+    1. 类的静态中成员增加了作为游戏全局设置的变量
 
 3. 字体改动
    修改全局字体为 SourceHanSansSC-Bold.otf 思源黑体，支持中文显示
@@ -112,7 +107,7 @@ this change log is to log the difference from origin sfSnake on https://github.c
 
 ## 20220524
 
-1. 游戏玩法迭代
+1. 新增游戏玩法
     1. 按空格键加速
     2. 鼠标点击控制方向，长按拖拽可以持续控制方向
     3. 新增手柄操作控制方向
@@ -121,13 +116,21 @@ this change log is to log the difference from origin sfSnake on https://github.c
 
 ## 22020525
 
-1. 增加了 OptionScreen, 现在可以在OptionScreen里面切换颜色状态了
+1. 增加了 `OptionScreen`, 现在可以在`OptionScreen`里面切换颜色状态了
+   1. `optionScreen`使用`OptionButton`进行设置
 2. 小幅度优化了UI设计，新增返回UI和重置UI
 3. 设计了键盘锁和鼠标锁，防止误触
 
 ## 220526
 
 1. 删除手柄控制和键盘控制窗口切换
-2. 全面统一UI设计，通过Button类操作并显示
+2. 全面统一UI设计，通过`Button`类操作并显示
 3. 增加 `PauseScreen` 类，在游戏中暂停可以进入暂停界面，可以进行设置、重新开始、退出、返回等操作
 4. 游戏中实时显示分数
+
+## 220527
+
+1. 新增帮助界面和关于界面, `HelpScreen` 和 `AboutScreen`
+2. 在首页，暂停页，结束页添加帮助按钮和关于按钮
+3. 将 `OptionButton` 类独立出来，方便复用
+4. 到这里就不做大的改动了，整体定型

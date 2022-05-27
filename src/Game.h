@@ -8,7 +8,6 @@
 #include <cmath>
 
 #include "screen/Screen.h"
-#include "element/Snake.h"
 
 namespace sfSnake
 {

@@ -19,7 +19,7 @@ GameScreen::GameScreen()
     font_.loadFromFile("assets/fonts/SourceHanSansSC-Bold.otf");
 
     score_.setFont(font_);
-    score_.setString(sf::String(L"分数:\t") + std::to_string(snake_.getScore()));
+    score_.setString(sf::String(L"分数:") + std::to_string(snake_.getScore()));
     score_.setCharacterSize(Game::VideoMode_.width / 25.0f);
     score_.setFillColor(Game::Color::Yellow);
     setOriginMiddle(score_);

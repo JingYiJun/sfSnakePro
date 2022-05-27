@@ -4,6 +4,7 @@
 
 #include "screen/Screen.h"
 #include "element/Button.h"
+#include "element/OptionButton.h"
 #include "Game.h"
 
 #include <vector>
@@ -26,6 +27,7 @@ namespace sfSnake
         sf::Sprite titleSprite_;
         std::vector<Button> button_;
         Button returnButton_;
-        unsigned nowFocused;
+        OptionButton helpButton_;
+        OptionButton aboutButton_;
     };
 }

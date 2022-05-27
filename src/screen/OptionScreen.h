@@ -8,6 +8,7 @@
 #include "screen/GameScreen.h"
 #include "element/Grid.h"
 #include "element/Button.h"
+#include "element/OptionButton.h"
 
 namespace sfSnake
 {
@@ -22,22 +23,7 @@ namespace sfSnake
 
     private:
         sf::Font font_;
-        struct OptionButton
-        {
-            sf::Text text_;
-
-            OptionButton() = default;
-            ~OptionButton() = default;
-
-            void settings(sf::String content,
-                          sf::Font &font,
-                          float setCharacterSize,
-                          sf::Color color,
-                          sf::Vector2f position);
-            void clear();
-            void focused();
-            void seleted();
-        };
+        
         std::vector<OptionButton> optionName_;
         std::vector<OptionButton> GridShowOptions_;
         std::vector<OptionButton> GridColorOptions_;

@@ -6,6 +6,8 @@
 #include "screen/GameScreen.h"
 #include "screen/PauseScreen.h"
 #include "screen/OptionScreen.h"
+#include "screen/HelpScreen.h"
+#include "screen/AboutScreen.h"
 #include "Game.h"
 
 using namespace sfSnake;
@@ -32,6 +34,20 @@ PauseScreen::PauseScreen()
     button_[1].setPosition(Game::VideoMode_.width / 2.0, Game::VideoMode_.height / 5.0 * 3.0);
     button_[2].setPosition(Game::VideoMode_.width / 3.0 * 2.0, Game::VideoMode_.height / 5.0 * 3.0);
     returnButton_.setPosition(Game::VideoMode_.width / 15.0, Game::VideoMode_.width / 15.0);
+
+    helpButton_.settings(
+        L"帮助",
+        font_,
+        Game::VideoMode_.width / 20.0,
+        sf::Color::Green,
+        sf::Vector2f(Game::VideoMode_.width / 5.0f * 2.0f, Game::VideoMode_.height / 5.0f * 4.0f));
+
+    aboutButton_.settings(
+        L"关于",
+        font_,
+        Game::VideoMode_.width / 20.0,
+        sf::Color::Green,
+        sf::Vector2f(Game::VideoMode_.width / 5.0f * 3.0f, Game::VideoMode_.height / 5.0f * 4.0f));
 }
 
 void PauseScreen::handleInput(sf::RenderWindow &window)
@@ -41,6 +57,8 @@ void PauseScreen::handleInput(sf::RenderWindow &window)
     for (auto &i : button_)
         i.focused(false);
     returnButton_.focused(false);
+    helpButton_.clear();
+    aboutButton_.clear();
 
     if (button_[0].contain(mousePosition))
     {
@@ -89,6 +107,34 @@ void PauseScreen::handleInput(sf::RenderWindow &window)
             return;
         }
     }
+
+    if (helpButton_.contains(mousePosition))
+    {
+        helpButton_.focused();
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            helpButton_.seleted();
+            Game::mouseButtonCDtime = sf::Time::Zero;
+            Game::mouseButtonLocked = true;
+            Game::TmpScreen_ = Game::Screen_;
+            Game::Screen_ = std::make_shared<HelpScreen>();
+            return;
+        }
+    }
+
+    if (aboutButton_.contains(mousePosition))
+    {
+        aboutButton_.focused();
+        if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            aboutButton_.seleted();
+            Game::mouseButtonCDtime = sf::Time::Zero;
+            Game::mouseButtonLocked = true;
+            Game::TmpScreen_ = Game::Screen_;
+            Game::Screen_ = std::make_shared<AboutScreen>();
+            return;
+        }
+    }
 }
 
 void PauseScreen::update(sf::Time delta)
@@ -127,4 +173,6 @@ void PauseScreen::render(sf::RenderWindow &window)
         button.render(window);
     }
     returnButton_.render(window);
+    helpButton_.render(window);
+    aboutButton_.render(window);
 }
