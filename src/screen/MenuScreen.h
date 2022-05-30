@@ -19,12 +19,7 @@ namespace sfSnake
         void update(sf::Time delta) override;
         void render(sf::RenderWindow &window) override;
 
-        void setRotation(float angle);
-
     private:
-        sf::Font font_;
-        sf::Texture titleTexture_;
-        sf::Sprite titleSprite_;
         std::vector<Button> button_;
         OptionButton helpButton_;
         OptionButton aboutButton_;

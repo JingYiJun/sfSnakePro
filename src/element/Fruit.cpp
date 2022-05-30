@@ -11,10 +11,7 @@ Fruit::Fruit(sf::Vector2f position, sf::Color color, int score)
     : score_(score)
 {
     shape_.setRadius(Fruit::Radius);
-    sf::FloatRect shapeBounds = shape_.getLocalBounds();
-    shape_.setOrigin(
-        shapeBounds.left + shapeBounds.width / 2,
-        shapeBounds.top + shapeBounds.height / 2);
+    setOriginMiddle(shape_);
     shape_.setPosition(position);
     shape_.setFillColor(color);
 }

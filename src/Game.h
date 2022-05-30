@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "screen/Screen.h"
+#include "element/TitleSprite.h"
 
 namespace sfSnake
 {
@@ -15,23 +16,44 @@ namespace sfSnake
     {
     public:
         Game();
+        ~Game() = default;
 
         void run();
 
+    private:
         void handleInput();
         void update(sf::Time delta);
         void render();
 
+    public:
+        /* Global Color settings
+         * 全局颜色设置
+         */
+        class Color
+        {
+        public:
+            static const sf::Color Yellow;
+            static const sf::Color Green;
+            static const sf::Color Background[3];
+            static const sf::Color Grid[3];
+            static const sf::Color NotSeleted;
+            static const sf::Color Fruit[5];
+        };
+
         static sf::VideoMode initVideoMode_();
 
-        static sf::VideoMode VideoMode_;
-        static std::shared_ptr<Screen> Screen_;
-        static std::shared_ptr<Screen> TmpScreen_;
-        static std::shared_ptr<Screen> TmpGameScreen_;
+        static sf::VideoMode GlobalVideoMode;
 
-        static int GridVisibility_;
-        static int BackgroundColor_;
-        static int GridColor_;
+        static sf::Font GlobalFont;
+        static TitleSprite GlobalTitle;
+
+        static std::shared_ptr<Screen> MainScreen;
+        static std::shared_ptr<Screen> TmpScreen;
+        static std::shared_ptr<Screen> TmpGameScreen;
+
+        static int GridVisibility;
+        static int GridColor;
+        static int BackgroundColor;
 
         static bool mouseButtonLocked;
         static sf::Clock mouseButtonClock;
@@ -41,28 +63,29 @@ namespace sfSnake
         static sf::Clock keyboardClock;
         static sf::Time keyboardCDtime;
 
-        static int inputDevice; // 0 for keyboard, 1 for mouse, 2 for joystick
-
-        class Color
-        {
-        public:
-            static const sf::Color Yellow;
-            static const sf::Color Green;
-            static const sf::Color Background[3];
-            static const sf::Color Grid[3];
-            static const sf::Color NotSeleted;
-        };
+        static bool ifShowedHelp;
 
     private:
         sf::RenderWindow window_;
 
-        sf::Time TimePerFrame;
+        sf::Time TimePerFrame_;
 
         sf::Music bgMusic_;
     };
 
+    /**
+     * @brief set any shape's origin to its middle.
+     * @param shape any shape
+     *
+     * @code {.c++}
+     * setOriginMiddle(titleSprite_);
+     * @endcode
+     *
+     * @return sf::FloatRect shapeBounds
+     *
+     */
     template <typename T>
-    sf::FloatRect setOriginMiddle(T &shape)
+    inline sf::FloatRect setOriginMiddle(T &shape)
     {
         sf::FloatRect shapeBounds = shape.getLocalBounds();
         shape.setOrigin(shapeBounds.left + shapeBounds.width / 2,
@@ -70,15 +93,43 @@ namespace sfSnake
         return shapeBounds;
     }
 
+    /**
+     * @brief calculate the distance between two nodes
+     *
+     * @param node sf::Vector2
+     *
+     * @return double
+     */
     template <typename T1, typename T2>
-    double dis(sf::Vector2<T1> node1, sf::Vector2<T2> node2)
+    inline double dis(
+        sf::Vector2<T1> node1,
+        sf::Vector2<T2> node2) noexcept
     {
-        return std::sqrt(std::pow((node1.x - node2.x), 2) + std::pow((node1.y - node2.y), 2));
+        return std::sqrt(
+            std::pow(
+                (
+                    static_cast<double>(node1.x) -
+                    static_cast<double>(node2.x)),
+                2) +
+            std::pow(
+                (
+                    static_cast<double>(node1.y) -
+                    static_cast<double>(node2.y)),
+                2));
     }
 
+    /**
+     * @brief calculate the length of a vector
+     *
+     * @param node sf::Vector2
+     *
+     * @return double
+     */
     template <typename T>
-    double length(sf::Vector2<T> node)
+    inline double length(sf::Vector2<T> node) noexcept
     {
-        return std::sqrt(std::pow((node.x), 2) + std::pow((node.y), 2));
+        return std::sqrt(
+            std::pow(static_cast<double>(node.x), 2) +
+            std::pow(static_cast<double>(node.y), 2));
     }
 }

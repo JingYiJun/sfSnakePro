@@ -12,29 +12,19 @@ using namespace sfSnake;
 
 AboutScreen::AboutScreen()
 {
-    font_.loadFromFile("assets/fonts/SourceHanSansSC-Bold.otf");
-
-    titleTexture_.loadFromFile("assets/image/logo.png");
-    titleTexture_.setSmooth(true);
-    titleSprite_.setTexture(titleTexture_);
-
-    sf::FloatRect titleSpriteBounds = setOriginMiddle(titleSprite_);
-    titleSprite_.setScale(titleSpriteBounds.width / Game::VideoMode_.width / 5.0 * 4.0, titleSpriteBounds.width / Game::VideoMode_.width / 5.0 * 4.0);
-    titleSprite_.setPosition(Game::VideoMode_.width / 2, Game::VideoMode_.height / 4);
-
-    text_.setFont(font_);
+    text_.setFont(Game::GlobalFont);
     text_.setString(
-        sf::String(L"这是复旦大学2022年面向对象程序设计课程大作业\n\n") +
-        sf::String(L"原作者：jhpy1024 jhpy1024@gmail.com\n\n") +
-        sf::String(L"作者：精益君 JingYiJun3104@outlook.com\n\n") +
+        sf::String(L"这是复旦大学2022年春面向对象程序设计课程大作业\n\n") +
+        sf::String(L"原作者：jhpy1024(jhpy1024@gmail.com)\n\n") +
+        sf::String(L"作者：精益君(JingYiJun3104@outlook.com)\n\n") +
         sf::String(L"The MIT License (MIT) Copyright © 2022 <JingYiJun>"));
-    text_.setCharacterSize(Game::VideoMode_.width / 35.0f);
+    text_.setCharacterSize(Game::GlobalVideoMode.width / 35.0f);
     text_.setFillColor(Game::Color::Green);
     setOriginMiddle(text_);
-    text_.setPosition(Game::VideoMode_.width / 2.0, Game::VideoMode_.height / 5.0 * 3.0);
+    text_.setPosition(Game::GlobalVideoMode.width / 2.0, Game::GlobalVideoMode.height / 5.0 * 3.0);
 
     returnButton_.update("assets/image/returnUI.png", 1 / 16.0f);
-    returnButton_.setPosition(Game::VideoMode_.width / 15.0f, Game::VideoMode_.width / 15.0f);
+    returnButton_.setPosition(Game::GlobalVideoMode.width / 15.0f, Game::GlobalVideoMode.width / 15.0f);
 }
 
 void AboutScreen::handleInput(sf::RenderWindow &window)
@@ -49,8 +39,8 @@ void AboutScreen::handleInput(sf::RenderWindow &window)
         {
             Game::mouseButtonCDtime = sf::Time::Zero;
             Game::mouseButtonLocked = true;
-            Game::Screen_ = Game::TmpScreen_;
-            Game::TmpScreen_ = nullptr;
+            Game::MainScreen = Game::TmpScreen;
+            Game::TmpScreen = nullptr;
             return;
         }
     }
@@ -58,35 +48,12 @@ void AboutScreen::handleInput(sf::RenderWindow &window)
 
 void AboutScreen::update(sf::Time delta)
 {
-    static bool movingLeft = false;
-    static bool movingRight = true;
-
-    if (movingRight)
-    {
-        titleSprite_.rotate(delta.asSeconds());
-
-        if (static_cast<int>(titleSprite_.getRotation()) == 10)
-        {
-            movingRight = false;
-            movingLeft = true;
-        }
-    }
-
-    if (movingLeft)
-    {
-        titleSprite_.rotate(-delta.asSeconds());
-
-        if (static_cast<int>(titleSprite_.getRotation()) == (360 - 10))
-        {
-            movingLeft = false;
-            movingRight = true;
-        }
-    }
+    Game::GlobalTitle.update(delta);
 }
 
 void AboutScreen::render(sf::RenderWindow &window)
 {
-    window.draw(titleSprite_);
+    Game::GlobalTitle.render(window);
     returnButton_.render(window);
     window.draw(text_);
 }

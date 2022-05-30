@@ -11,90 +11,86 @@ OptionScreen::OptionScreen()
       GridShowfocused_(-1), GridColorfocused_(-1), BGColorfocused_(-1),
       grid_(), returnButton_()
 {
-    font_.loadFromFile("assets/fonts/SourceHanSansSC-Bold.otf");
-
-    static sf::FloatRect bounds;
-
-    float characterSize = Game::VideoMode_.width / 25.f;
+    float characterSize = Game::GlobalVideoMode.width / 25.f;
 
     // init optionlist
     optionName_[0].settings(
         L"网格状态：",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::Green,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f, Game::VideoMode_.height / 4.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f, Game::GlobalVideoMode.height / 4.0f));
 
     optionName_[1].settings(
         L"网格颜色：",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::Green,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f, Game::VideoMode_.height / 2.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f, Game::GlobalVideoMode.height / 2.0f));
 
     optionName_[2].settings(
         L"背景颜色：",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::Green,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f, Game::VideoMode_.height / 4.0f * 3.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f, Game::GlobalVideoMode.height / 4.0f * 3.0f));
 
     // option GridShow
     GridShowOptions_[0].settings(
         L"关闭",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 15.0f * 7.0f, Game::VideoMode_.height / 4.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 15.0f * 7.0f, Game::GlobalVideoMode.height / 4.0f));
     GridShowOptions_[1].settings(
         L"开启",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 15.0f * 11.0f, Game::VideoMode_.height / 4.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 15.0f * 11.0f, Game::GlobalVideoMode.height / 4.0f));
 
     // option GridColor
     GridColorOptions_[0].settings(
         L"白色",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 2.0f, Game::VideoMode_.height / 2.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 2.0f, Game::GlobalVideoMode.height / 2.0f));
     GridColorOptions_[1].settings(
         L"黑色",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 3.0f, Game::VideoMode_.height / 2.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 3.0f, Game::GlobalVideoMode.height / 2.0f));
     GridColorOptions_[2].settings(
         L"棕色",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 4.0f, Game::VideoMode_.height / 2.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 4.0f, Game::GlobalVideoMode.height / 2.0f));
 
     // option BGColor
     BGColorOptions_[0].settings(
         L"白色",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 2.0f, Game::VideoMode_.height / 4.0f * 3.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 2.0f, Game::GlobalVideoMode.height / 4.0f * 3.0f));
     BGColorOptions_[1].settings(
         L"黑色",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 3.0f, Game::VideoMode_.height / 4.0f * 3.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 3.0f, Game::GlobalVideoMode.height / 4.0f * 3.0f));
     BGColorOptions_[2].settings(
         L"棕色",
-        font_,
+        Game::GlobalFont,
         characterSize,
         Game::Color::NotSeleted,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 4.0f, Game::VideoMode_.height / 4.0f * 3.0f));
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 4.0f, Game::GlobalVideoMode.height / 4.0f * 3.0f));
 
     returnButton_.update("assets/image/returnUI.png", 1 / 16.0f);
-    returnButton_.setPosition(Game::VideoMode_.width / 15.0f, Game::VideoMode_.width / 15.0f);
+    returnButton_.setPosition(Game::GlobalVideoMode.width / 15.0f, Game::GlobalVideoMode.width / 15.0f);
 }
 
 void OptionScreen::handleInput(sf::RenderWindow &window)
@@ -109,7 +105,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         GridShowfocused_ = 0;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::GridVisibility_ = 0;
+            Game::GridVisibility = 0;
             return;
         }
     }
@@ -118,7 +114,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         GridShowfocused_ = 1;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::GridVisibility_ = 1;
+            Game::GridVisibility = 1;
             return;
         }
     }
@@ -128,7 +124,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         GridColorfocused_ = 0;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::GridColor_ = 0;
+            Game::GridColor = 0;
             return;
         }
     }
@@ -137,7 +133,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         GridColorfocused_ = 1;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::GridColor_ = 1;
+            Game::GridColor = 1;
             return;
         }
     }
@@ -146,7 +142,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         GridColorfocused_ = 2;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::GridColor_ = 2;
+            Game::GridColor = 2;
             return;
         }
     }
@@ -156,7 +152,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         BGColorfocused_ = 0;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::BackgroundColor_ = 0;
+            Game::BackgroundColor = 0;
             return;
         }
     }
@@ -165,7 +161,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         BGColorfocused_ = 1;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::BackgroundColor_ = 1;
+            Game::BackgroundColor = 1;
             return;
         }
     }
@@ -174,7 +170,7 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         BGColorfocused_ = 2;
         if (!Game::mouseButtonLocked && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            Game::BackgroundColor_ = 2;
+            Game::BackgroundColor = 2;
             return;
         }
     }
@@ -187,8 +183,8 @@ void OptionScreen::handleInput(sf::RenderWindow &window)
         {
             Game::mouseButtonCDtime = sf::Time::Zero;
             Game::mouseButtonLocked = true;
-            Game::Screen_ = Game::TmpScreen_;
-            Game::TmpScreen_ = nullptr;
+            Game::MainScreen = Game::TmpScreen;
+            Game::TmpScreen = nullptr;
             return;
         }
     }
@@ -205,22 +201,22 @@ void OptionScreen::update(sf::Time delta)
     for (auto &i : BGColorOptions_)
         i.clear();
 
-    GridShowOptions_[Game::GridVisibility_].seleted();
+    GridShowOptions_[Game::GridVisibility].seleted();
     if (GridShowfocused_ != -1)
         GridShowOptions_[GridShowfocused_].focused();
 
-    GridColorOptions_[Game::GridColor_].seleted();
+    GridColorOptions_[Game::GridColor].seleted();
     if (GridColorfocused_ != -1)
         GridColorOptions_[GridColorfocused_].focused();
 
-    BGColorOptions_[Game::BackgroundColor_].seleted();
+    BGColorOptions_[Game::BackgroundColor].seleted();
     if (BGColorfocused_ != -1)
         BGColorOptions_[BGColorfocused_].focused();
 }
 
 void OptionScreen::render(sf::RenderWindow &window)
 {
-    if (Game::GridVisibility_)
+    if (Game::GridVisibility)
         grid_.render(window);
     for (auto &i : optionName_)
         i.render(window);

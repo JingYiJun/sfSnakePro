@@ -29,7 +29,6 @@ namespace sfSnake
 
         Button pauseButton_;
 
-        sf::Font font_;
         sf::Text score_;
     };
 }

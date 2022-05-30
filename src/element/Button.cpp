@@ -15,7 +15,7 @@ void Button::update(std::string filename, float scale)
     texture_.setSmooth(true);
     sprite_.setTexture(texture_);
     sf::FloatRect bounds = setOriginMiddle(sprite_);
-    sprite_.setScale(Game::VideoMode_.width / bounds.width * scale, Game::VideoMode_.width / bounds.width * scale);
+    sprite_.setScale(Game::GlobalVideoMode.width / bounds.width * scale, Game::GlobalVideoMode.width / bounds.width * scale);
 }
 
 void Button::setPosition(float x, float y)

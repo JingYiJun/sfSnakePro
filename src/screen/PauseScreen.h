@@ -22,9 +22,6 @@ namespace sfSnake
         void render(sf::RenderWindow &window) override;
 
     private:
-        sf::Font font_;
-        sf::Texture titleTexture_;
-        sf::Sprite titleSprite_;
         std::vector<Button> button_;
         Button returnButton_;
         OptionButton helpButton_;

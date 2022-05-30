@@ -18,10 +18,11 @@ namespace sfSnake
         void render(sf::RenderWindow &window) override;
 
     private:
-        sf::Font font_;
         sf::Text text_;
+        
         std::vector<Button> button_;
         unsigned score_;
+
         OptionButton helpButton_;
         OptionButton aboutButton_;
     };

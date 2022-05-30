@@ -22,8 +22,6 @@ namespace sfSnake
         void render(sf::RenderWindow &window) override;
 
     private:
-        sf::Font font_;
-        
         std::vector<OptionButton> optionName_;
         std::vector<OptionButton> GridShowOptions_;
         std::vector<OptionButton> GridColorOptions_;

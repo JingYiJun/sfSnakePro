@@ -14,36 +14,34 @@ using namespace sfSnake;
 GameOverScreen::GameOverScreen(std::size_t score)
     : button_(3), score_(score)
 {
-    font_.loadFromFile("assets/fonts/SourceHanSansSC-Bold.otf");
-
-    text_.setFont(font_);
+    text_.setFont(Game::GlobalFont);
     text_.setString(sf::String(L"最终分数：") + std::to_string(score));
     text_.setFillColor(Game::Color::Yellow);
-    text_.setCharacterSize(Game::VideoMode_.width / 15);
+    text_.setCharacterSize(Game::GlobalVideoMode.width / 15);
     setOriginMiddle(text_);
-    text_.setPosition(Game::VideoMode_.width / 2.0f, Game::VideoMode_.height / 4.0f);
+    text_.setPosition(Game::GlobalVideoMode.width / 2.0f, Game::GlobalVideoMode.height / 4.0f);
 
     button_[0].update("assets/image/optionUI.png");
     button_[1].update("assets/image/restartUI.png");
     button_[2].update("assets/image/exitUI.png");
 
-    button_[0].setPosition(Game::VideoMode_.width / 3.0, Game::VideoMode_.height / 5.0 * 3.0);
-    button_[1].setPosition(Game::VideoMode_.width / 2.0, Game::VideoMode_.height / 5.0 * 3.0);
-    button_[2].setPosition(Game::VideoMode_.width / 3.0 * 2.0, Game::VideoMode_.height / 5.0 * 3.0);
+    button_[0].setPosition(Game::GlobalVideoMode.width / 3.0, Game::GlobalVideoMode.height / 5.0 * 3.0);
+    button_[1].setPosition(Game::GlobalVideoMode.width / 2.0, Game::GlobalVideoMode.height / 5.0 * 3.0);
+    button_[2].setPosition(Game::GlobalVideoMode.width / 3.0 * 2.0, Game::GlobalVideoMode.height / 5.0 * 3.0);
 
     helpButton_.settings(
         L"帮助",
-        font_,
-        Game::VideoMode_.width / 20.0,
-        sf::Color::Green,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 2.0f, Game::VideoMode_.height / 5.0f * 4.0f));
+        Game::GlobalFont,
+        Game::GlobalVideoMode.width / 20.0,
+        Game::Color::Green,
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 2.0f, Game::GlobalVideoMode.height / 5.0f * 4.0f));
 
     aboutButton_.settings(
         L"关于",
-        font_,
-        Game::VideoMode_.width / 20.0,
-        sf::Color::Green,
-        sf::Vector2f(Game::VideoMode_.width / 5.0f * 3.0f, Game::VideoMode_.height / 5.0f * 4.0f));
+        Game::GlobalFont,
+        Game::GlobalVideoMode.width / 20.0,
+        Game::Color::Green,
+        sf::Vector2f(Game::GlobalVideoMode.width / 5.0f * 3.0f, Game::GlobalVideoMode.height / 5.0f * 4.0f));
 }
 
 void GameOverScreen::handleInput(sf::RenderWindow &window)
@@ -63,8 +61,8 @@ void GameOverScreen::handleInput(sf::RenderWindow &window)
         {
             Game::mouseButtonCDtime = sf::Time::Zero;
             Game::mouseButtonLocked = true;
-            Game::TmpScreen_ = Game::Screen_;
-            Game::Screen_ = std::make_shared<OptionScreen>();
+            Game::TmpScreen = Game::MainScreen;
+            Game::MainScreen = std::make_shared<OptionScreen>();
             return;
         }
     }
@@ -76,7 +74,7 @@ void GameOverScreen::handleInput(sf::RenderWindow &window)
         {
             Game::mouseButtonCDtime = Game::mouseButtonClock.restart();
             Game::mouseButtonLocked = true;
-            Game::Screen_ = std::make_shared<GameScreen>();
+            Game::MainScreen = std::make_shared<GameScreen>();
             return;
         }
     }
@@ -99,8 +97,8 @@ void GameOverScreen::handleInput(sf::RenderWindow &window)
             helpButton_.seleted();
             Game::mouseButtonCDtime = sf::Time::Zero;
             Game::mouseButtonLocked = true;
-            Game::TmpScreen_ = Game::Screen_;
-            Game::Screen_ = std::make_shared<HelpScreen>();
+            Game::TmpScreen = Game::MainScreen;
+            Game::MainScreen = std::make_shared<HelpScreen>();
             return;
         }
     }
@@ -113,8 +111,8 @@ void GameOverScreen::handleInput(sf::RenderWindow &window)
             aboutButton_.seleted();
             Game::mouseButtonCDtime = sf::Time::Zero;
             Game::mouseButtonLocked = true;
-            Game::TmpScreen_ = Game::Screen_;
-            Game::Screen_ = std::make_shared<AboutScreen>();
+            Game::TmpScreen = Game::MainScreen;
+            Game::MainScreen = std::make_shared<AboutScreen>();
             return;
         }
     }
