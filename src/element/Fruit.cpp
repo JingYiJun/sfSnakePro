@@ -5,12 +5,10 @@
 
 using namespace sfSnake;
 
-float Fruit::Radius = 5.0f;
-
 Fruit::Fruit(sf::Vector2f position, sf::Color color, int score)
     : score_(score)
 {
-    shape_.setRadius(Fruit::Radius);
+    shape_.setRadius(Game::GlobalVideoMode.width / 256.0f);
     setOriginMiddle(shape_);
     shape_.setPosition(position);
     shape_.setFillColor(color);

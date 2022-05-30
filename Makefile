@@ -6,7 +6,7 @@ CXX_FLAGS=-g -static -std=c++17 -Wall -O2 -DSFML_STATIC #-Wl,--stack=268435456
 rm=rm -fr
 mkdir=mkdir2 -p
 
-TARGET=main
+TARGET=sfSnakePro
 BUILD_DIR=build
 SRC_DIR= src src/screen src/element
 SRCS = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.cpp))

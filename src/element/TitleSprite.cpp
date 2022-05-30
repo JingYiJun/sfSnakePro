@@ -13,7 +13,7 @@ TitleSprite::TitleSprite()
     titleSprite_.setTexture(titleTexture_);
 
     sf::FloatRect titleSpriteBounds = setOriginMiddle(titleSprite_);
-    titleSprite_.setScale(titleSpriteBounds.width / Game::GlobalVideoMode.width / 5.0 * 4.0, titleSpriteBounds.width / Game::GlobalVideoMode.width / 5.0 * 4.0);
+    titleSprite_.setScale(Game::GlobalVideoMode.width / titleSpriteBounds.width * 0.5f, Game::GlobalVideoMode.width / titleSpriteBounds.width * 0.5f);
     titleSprite_.setPosition(Game::GlobalVideoMode.width / 2, Game::GlobalVideoMode.height / 4);
 }
 

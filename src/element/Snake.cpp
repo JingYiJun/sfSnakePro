@@ -138,7 +138,7 @@ void Snake::checkFruitCollisions(std::deque<Fruit> &fruits)
     {
         if (dis(
                 i->shape_.getPosition(), toWindow(headnode)) <
-            nodeRadius_ + i->Radius)
+            nodeRadius_ + i->shape_.getRadius())
             toRemove = i;
     }
 
