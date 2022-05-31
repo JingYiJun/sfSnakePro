@@ -121,10 +121,13 @@ void Game::handleInput()
     static sf::Event event;
 
     while (window_.pollEvent(event))
+    {
         if (event.type == sf::Event::Closed)
             window_.close();
+    }
 
-    if (sf::FloatRect(
+    if (window_.hasFocus() &&
+        sf::FloatRect(
             sf::Vector2f(0, 0),
             sf::Vector2f(
                 Game::GlobalVideoMode.width,
