@@ -2,7 +2,7 @@ sfSnake.vcxproj
 sfSnake.vcxproj.filters
 Debug/
 Release/
-Build/
+[Bb]uild/
 *.exe
 .vscode
 *.log
