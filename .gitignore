@@ -7,3 +7,7 @@ Release/
 .vscode
 *.log
 *.zip
+.cache
+.idea
+cmake-build-*
+compile_commands.json
