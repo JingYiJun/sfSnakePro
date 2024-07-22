@@ -78,8 +78,8 @@ void MenuScreen::handleInput(sf::RenderWindow &window)
             else
             {
                 Game::MainScreen = std::make_shared<GameScreen>();
-                return;
             }
+            return;
         }
     }
 
